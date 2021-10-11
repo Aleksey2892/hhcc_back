@@ -1,4 +1,6 @@
-const exampleCard = {
+const cardModel = require('../model/schemas/cardModel')
+
+const testCard = {
   cardName: '',
   cardId: '',
   date: '',
@@ -16,12 +18,14 @@ const exampleCard = {
   artist: '',
   animator: '',
   url: '',
-};
+}
 
 const get = async (req, res) => {
-  res.status(200).json({ cards: [] });
-};
+  const allCards = await cardModel.find({})
+
+  return res.status(200).json({ cards: [...allCards, testCard] })
+}
 
 module.exports = {
   get,
-};
+}
