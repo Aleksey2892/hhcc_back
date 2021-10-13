@@ -31,10 +31,10 @@ const cardsController = {
   },
   async create(req, res, next) {
     try {
-      const newCard = await Cards.create(req.body)
+      const newCard = await Cards.createCard(req.body)
       return res
         .status(HttpCodes.CREATED)
-        .json({ status: 'success', code: HttpCodes.CREATED, newCard })
+        .json({ status: 'success', code: HttpCodes.CREATED, data: { newCard } })
     } catch (e) {
       next(e)
     }
@@ -44,21 +44,21 @@ const cardsController = {
       const removedCard = await Cards.removeCard(req.params.cardId)
       return res
         .status(HttpCodes.OK)
-        .json({ status: 'success', code: HttpCodes.OK, removedCard })
+        .json({ status: 'success', code: HttpCodes.OK, removedCard: {} })
+    } catch (e) {
+      next(e)
+    }
+  },
+  async update(req, res, next) {
+    try {
+      const updatedCard = await Cards.updateCard(req.params.cardId, req.body)
+      return res
+        .status(HttpCodes.OK)
+        .json({ status: 'succes', code: HttpCodes.OK, updatedCard })
     } catch (e) {
       next(e)
     }
   },
 }
-
-// const updateCard = async (req, res) => {
-//   const updatedCard = await CardModel.findOneAndUpdate(
-//     req.params.cardId,
-//     req.body,
-//   )
-//   return res
-//     .status(201)
-//     .json({ status: 'success', code: 201, updatedCard: { updatedCard } })
-// }
 
 module.exports = cardsController

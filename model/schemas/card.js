@@ -28,12 +28,10 @@ const cardSchema = new Schema(
     },
     type: {
       type: String,
-      enum: enums.type,
       required: [true, `type is required of ${enums.type}`],
     },
     rarity: {
       type: String,
-      enum: enums.rarity,
       required: [true, `type is required of ${enums.rarity}`],
     },
     rarityScore: {
