@@ -4,10 +4,12 @@ const Faq = require('../model/methods/Faq')
 const faqController = {
   async get(_req, res, next) {
     try {
-      const responseData = await Faq.getAll()
-      return !responseData
+      const questions = await Faq.getAll()
+      return !questions
         ? res.status(HttpCodes.SERVER_ERROR)
-        : res.status(HttpCodes.OK).json({ status: HttpCodes.OK, responseData })
+        : res
+            .status(HttpCodes.OK)
+            .json({ status: HttpCodes.OK, responseData: { questions } })
     } catch (error) {
       next(error)
     }

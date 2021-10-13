@@ -7,6 +7,6 @@ router.get('/cards', cardsController.get).post('/cards', cardsController.create)
 router
   .get('/cards/:cardId', cardsController.getById)
   .delete('/cards/:cardId', cardsController.remove)
-//   .put('/cards/:cardId', cardsController.updateCard)
+  .put('/cards/:cardId', cardsController.update)
 
 module.exports = router
