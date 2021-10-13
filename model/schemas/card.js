@@ -66,6 +66,4 @@ const cardSchema = new Schema(
   { versionKey: false, timestamps: true },
 )
 
-const Card = model('cards', cardSchema)
-
-module.exports = Card
+module.exports = model('cards', cardSchema)

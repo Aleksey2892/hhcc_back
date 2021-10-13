@@ -2,7 +2,8 @@ const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
 const HttpCodes = require('./constants/httpCodes')
-const cardsRoute = require('./routes/api/cardsRoute')
+const cardsRoute = require('./routes/api/cards')
+const faqRoute = require('./routes/api/faq')
 
 const app = express()
 
@@ -12,6 +13,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/', cardsRoute)
+app.use('/', faqRoute)
 
 app.use((_req, res) => {
   res.status(HttpCodes.NOT_FOUND).json({ message: 'Not found' })
