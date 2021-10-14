@@ -42,9 +42,18 @@ const cardsController = {
   async remove(req, res, next) {
     try {
       const removedCard = await Cards.removeCard(req.params.cardId)
-      return res
-        .status(HttpCodes.OK)
-        .json({ status: 'success', code: HttpCodes.OK, removedCard: {} })
+      if (!removedCard) {
+        return res.status(HttpCodes.NOT_FOUND).json({
+          status: 'error',
+          code: HttpCodes.NOT_FOUND,
+          message: 'Card not found!',
+        })
+      }
+      return res.status(HttpCodes.OK).json({
+        status: 'success',
+        code: HttpCodes.OK,
+        message: 'Card deleted!',
+      })
     } catch (e) {
       next(e)
     }
@@ -52,6 +61,14 @@ const cardsController = {
   async update(req, res, next) {
     try {
       const updatedCard = await Cards.updateCard(req.params.cardId, req.body)
+
+      if (!updatedCard) {
+        return res.status(HttpCodes.NOT_FOUND).json({
+          status: 'error',
+          code: HttpCodes.NOT_FOUND,
+          message: 'Not found!',
+        })
+      }
       return res
         .status(HttpCodes.OK)
         .json({ status: 'succes', code: HttpCodes.OK, updatedCard })
