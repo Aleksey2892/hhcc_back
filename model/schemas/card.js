@@ -1,9 +1,8 @@
 const { Schema, model } = require('mongoose')
+const { CardTypes, CardRarity } = require('../../constants/enumsCard')
 
-const enums = {
-  type: ['Human', 'Event', 'Invention', 'Artwork', 'Special'],
-  rarity: ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'],
-}
+const cardTypesOptions = Object.values(CardTypes)
+const cardRarityOptions = Object.values(CardRarity)
 
 const cardSchema = new Schema(
   {
@@ -40,11 +39,13 @@ const cardSchema = new Schema(
     },
     type: {
       type: String,
-      required: [true, `type is required of ${enums.type}`],
+      enum: cardTypesOptions,
+      required: [true, `type is required of ${cardRarityOptions}`],
     },
     rarity: {
       type: String,
-      required: [true, `type is required of ${enums.rarity}`],
+      enum: cardRarityOptions,
+      required: [true, `type is required of ${cardRarityOptions}`],
     },
     categories: {
       type: Array,
