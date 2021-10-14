@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const { HttpCodes } = require('../constants/httpCodes')
+const HttpCodes = require('../constants/httpCodes')
 
 const validateCreateCard = Joi.object({
   cardName: Joi.string().alphanum().min(2).max(50).required(),
@@ -56,18 +56,16 @@ const validateUpdateCard = Joi.object({
   'animator',
 )
 
-const validate = (shema, body, next) => {
-  const { error } = shema.validate(body)
-
-  if (error) {
-    const [{ message }] = error.details
-    return next({
+const validate = async (schema, body, next) => {
+  try {
+    await schema.validateAsync(body)
+    next()
+  } catch (error) {
+    next({
       status: HttpCodes.BAD_REQUEST,
-      message: `Filed: ${message.replace(/"/g, '')}`,
-      data: 'Bad Request',
+      message: error.message.replace(/"/g, ''),
     })
   }
-  next()
 }
 
 module.exports = {

@@ -3,85 +3,77 @@ const Cards = require('../model/methods/Cards')
 
 const cardsController = {
   async get(req, res, next) {
-    const { id = null } = req.body
-    try {
-      let responseData
-      !id
-        ? (responseData = await Cards.getAll())
-        : (responseData = await Cards.getCardById(id))
+    const { resBuilder } = res
 
-      return !responseData
-        ? res.status(HttpCodes.BAD_REQUEST)
-        : res
-            .status(HttpCodes.OK)
-            .json({ status: 'success', code: HttpCodes.OK, responseData })
+    try {
+      const cardsCollection = await Cards.getCollection()
+
+      return !cardsCollection
+        ? resBuilder.error(HttpCodes.NO_CONTENT, 'ID not found')
+        : resBuilder.success(HttpCodes.OK, cardsCollection)
     } catch (e) {
       next(e)
     }
   },
+
   async getById(req, res, next) {
-    try {
-      const cardById = await Cards.getCardById2(req.params.cardId)
-      if (!cardById) {
-        return res
-          .status(HttpCodes.NOT_FOUND)
-          .json({
-            status: 'error',
-            code: HttpCodes.NOT_FOUND,
-            message: 'ID not found',
-          })
-      }
-      
-      return res
-        .status(HttpCodes.OK)
-        .json({ status: 'success', code: HttpCodes.OK, cardById })
-    } catch (e) {
-      next(e)
-    }
-  },
-  async create(req, res, next) {
-    try {
-      const newCard = await Cards.createCard(req.body)
-      return res
-        .status(HttpCodes.CREATED)
-        .json({ status: 'success', code: HttpCodes.CREATED, data: { newCard } })
-    } catch (e) {
-      next(e)
-    }
-  },
-  async remove(req, res, next) {
-    try {
-      const removedCard = await Cards.removeCard(req.params.cardId)
-      if (!removedCard) {
-        return res.status(HttpCodes.NOT_FOUND).json({
-          status: 'error',
-          code: HttpCodes.NOT_FOUND,
-          message: 'Card not found!',
-        })
-      }
-      return res.status(HttpCodes.OK).json({
-        status: 'success',
-        code: HttpCodes.OK,
-        message: 'Card deleted!',
-      })
-    } catch (e) {
-      next(e)
-    }
-  },
-  async update(req, res, next) {
-    try {
-      const updatedCard = await Cards.updateCard(req.params.cardId, req.body)
+    const { cardId = null } = req.params
+    const { resBuilder } = res
 
-      if (!updatedCard) {
-        return res.status(HttpCodes.NOT_FOUND).json({
-          status: 'error',
-          code: HttpCodes.NOT_FOUND,
-          message: 'Not found!',
-        })
-      }
-      return res
-        .status(HttpCodes.OK)
-        .json({ status: 'succes', code: HttpCodes.OK, updatedCard })
+    try {
+      const cardById = await Cards.getCardById(cardId)
+
+      return !cardById
+        ? resBuilder.error(HttpCodes.NO_CONTENT, 'ID not found')
+        : resBuilder.success(HttpCodes.OK, cardById)
+    } catch (e) {
+      next(e)
+    }
+  },
+
+  async create(req, res, next) {
+    const { body = null } = req
+    const { resBuilder } = res
+
+    try {
+      const newCard = await Cards.createCard(body)
+
+      return !newCard
+        ? resBuilder.error(HttpCodes.SERVER_ERROR, 'Card not created!')
+        : resBuilder.success(HttpCodes.OK, newCard)
+    } catch (e) {
+      next(e)
+    }
+  },
+
+  async remove(req, res, next) {
+    const { cardId = null } = req.params
+    const { resBuilder } = res
+
+    try {
+      const removedCard = await Cards.removeCard(cardId)
+
+      !removedCard
+        ? resBuilder.error(HttpCodes.SERVER_ERROR, 'Card not found')
+        : resBuilder.deleted(HttpCodes.OK, 'Card deleted!', removedCard)
+    } catch (e) {
+      next(e)
+    }
+  },
+
+  async update(req, res, next) {
+    const {
+      body = null,
+      params: { cardId = null },
+    } = req
+    const { resBuilder } = res
+
+    try {
+      const updatedCard = await Cards.updateCard(cardId, body)
+
+      !updatedCard
+        ? resBuilder.error(HttpCodes.BAD_REQUEST, 'Not found!')
+        : resBuilder.success(HttpCodes.OK, updatedCard)
     } catch (e) {
       next(e)
     }
