@@ -22,6 +22,16 @@ const cardsController = {
   async getById(req, res, next) {
     try {
       const cardById = await Cards.getCardById2(req.params.cardId)
+      if (!cardById) {
+        return res
+          .status(HttpCodes.NOT_FOUND)
+          .json({
+            status: 'error',
+            code: HttpCodes.NOT_FOUND,
+            message: 'ID not found',
+          })
+      }
+      
       return res
         .status(HttpCodes.OK)
         .json({ status: 'success', code: HttpCodes.OK, cardById })
