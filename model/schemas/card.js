@@ -61,7 +61,24 @@ const cardSchema = new Schema(
       type: String,
     },
   },
-  { versionKey: false, timestamps: true },
+  {
+    versionKey: false,
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        delete ret._id
+        return ret
+      },
+    },
+    toObject: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        delete ret._id
+        return ret
+      },
+    },
+  },
 )
 
 module.exports = model('cards', cardSchema)
