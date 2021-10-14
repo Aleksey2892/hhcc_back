@@ -11,19 +11,31 @@ const cardSchema = new Schema(
       type: String,
       required: [true, 'card name is required'],
     },
-    date: {
+    cardDate: {
+      // format - year-month-day
+      type: Date,
+    },
+    series: {
+      // autofield from series Name
       type: String,
     },
-    numberInEdition: {
+    cardNumber: {
+      // X/21 (X is the number of the card, 21 - is autifielled from Number of series cards  )
+      type: Number,
+    },
+    edition: {
+      // autofield from edition
       type: Number,
     },
     circulation: {
       type: Number,
     },
-    uploadCardThumbnail: {
+    uploadCardThumbnailJpg: {
+      // should be uploud only if goldenCard is true
       type: String,
     },
-    uploadCardHighRes: {
+    uploadCardHighResWebm: {
+      // should be uploud only if goldenCard is true
       type: String,
     },
     type: {
@@ -34,9 +46,6 @@ const cardSchema = new Schema(
       type: String,
       required: [true, `type is required of ${enums.rarity}`],
     },
-    rarityScore: {
-      type: Number,
-    },
     categories: {
       type: Array,
       set: data => (!data ? [] : data),
@@ -44,7 +53,8 @@ const cardSchema = new Schema(
     description: {
       type: String,
     },
-    golden: {
+    goldenCard: {
+      // if true upload uploadCardThumbnailJpg, uploadCardHighResWebm and upload Golden Card link on OpenSea
       type: Boolean,
       default: false,
     },
@@ -55,9 +65,6 @@ const cardSchema = new Schema(
       type: String,
     },
     animator: {
-      type: String,
-    },
-    url: {
       type: String,
     },
   },
