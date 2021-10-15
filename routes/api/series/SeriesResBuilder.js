@@ -1,23 +1,24 @@
-class ResBuilder {
+class SeriesResBuilder {
   #res
   constructor(res) {
     this.#res = res
   }
 
-  success(code, resData) {
+  success(code, resData, message) {
     return this.#res.status(code).json({
       status: 'success',
       code,
       resData,
+      message,
     })
   }
 
-  deleted(code, message, deletedCard) {
+  deleted(code, deletedCard, message) {
     return this.#res.status(code).json({
       status: 'success',
       code,
-      message,
       deletedCard,
+      message,
     })
   }
 
@@ -31,6 +32,6 @@ class ResBuilder {
 }
 
 module.exports = (req, res, next) => {
-  res.resBuilder = new ResBuilder(res)
+  res.resBuilder = new SeriesResBuilder(res)
   next()
 }
