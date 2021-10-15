@@ -1,25 +1,24 @@
 const CardModel = require('../../model/schemas/card')
+const BaseMethods = require('./BaseMethods')
 
-class CardsMethods {
-  getCollection() {
-    return CardModel.find({})
+class CardsMethods extends BaseMethods {
+  constructor(modelName) {
+    super(modelName)
   }
-  getCardById(cardId) {
-    return CardModel.findOne({ _id: cardId })
-  }
+
+  //TODO refactor and move to BaseMethods
   createCard(body) {
-    return CardModel.create(body)
+    return this.modelName.create(body)
   }
-  removeCard(cardId) {
-    return CardModel.findOneAndRemove({ _id: cardId })
-  }
-  updateCard(cardId, body) {
-    return CardModel.findOneAndUpdate(
-      { _id: cardId },
+
+  //TODO refactor and move to BaseMethods
+  updateCard(id, body) {
+    return this.modelName.findOneAndUpdate(
+      { _id: id },
       { ...body },
       { new: true },
     )
   }
 }
 
-module.exports = new CardsMethods()
+module.exports = new CardsMethods(CardModel)

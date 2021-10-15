@@ -8,24 +8,34 @@ const cardsController = {
     try {
       const cardsCollection = await Cards.getCollection()
 
-      return !cardsCollection
-        ? resBuilder.error(HttpCodes.NO_CONTENT, 'ID not found')
-        : resBuilder.success(HttpCodes.OK, cardsCollection)
+      if (!cardsCollection.length) {
+        return resBuilder.error(
+          HttpCodes.NOT_FOUND,
+          'Cards list is empty or server error',
+        )
+      }
+
+      return resBuilder.success(HttpCodes.OK, cardsCollection)
     } catch (e) {
       next(e)
     }
   },
 
   async getById(req, res, next) {
-    const { cardId = null } = req.params
+    const { id = null } = req.params
     const { resBuilder } = res
 
     try {
-      const cardById = await Cards.getCardById(cardId)
+      const cardById = await Cards.getById(id)
 
-      return !cardById
-        ? resBuilder.error(HttpCodes.NO_CONTENT, 'ID not found')
-        : resBuilder.success(HttpCodes.OK, cardById)
+      if (!cardById) {
+        return resBuilder.error(
+          HttpCodes.NOT_FOUND,
+          `Card with ${id} id was not found`,
+        )
+      }
+
+      return resBuilder.success(HttpCodes.OK, cardById)
     } catch (e) {
       next(e)
     }
@@ -38,24 +48,35 @@ const cardsController = {
     try {
       const newCard = await Cards.createCard(body)
 
-      return !newCard
-        ? resBuilder.error(HttpCodes.SERVER_ERROR, 'Card not created!')
-        : resBuilder.success(HttpCodes.OK, newCard)
+      if (!newCard) {
+        return resBuilder.error(HttpCodes.SERVER_ERROR, 'Card was not created!')
+      }
+
+      return resBuilder.success(HttpCodes.OK, newCard)
     } catch (e) {
       next(e)
     }
   },
 
   async remove(req, res, next) {
-    const { cardId = null } = req.params
+    const { id = null } = req.params
     const { resBuilder } = res
 
     try {
-      const removedCard = await Cards.removeCard(cardId)
+      const removedCard = await Cards.removeItem(id)
 
-      !removedCard
-        ? resBuilder.error(HttpCodes.SERVER_ERROR, 'Card not found')
-        : resBuilder.deleted(HttpCodes.OK, 'Card deleted!', removedCard)
+      if (!removedCard) {
+        return resBuilder.error(
+          HttpCodes.SERVER_ERROR,
+          `Card with ${id} id was not deleted or not found`,
+        )
+      }
+
+      return resBuilder.deleted(
+        HttpCodes.OK,
+        removedCard,
+        `Card with ${id} id was deleted`,
+      )
     } catch (e) {
       next(e)
     }
@@ -64,16 +85,21 @@ const cardsController = {
   async update(req, res, next) {
     const {
       body = null,
-      params: { cardId = null },
+      params: { id = null },
     } = req
     const { resBuilder } = res
 
     try {
-      const updatedCard = await Cards.updateCard(cardId, body)
+      const updatedCard = await Cards.updateCard(id, body)
 
-      !updatedCard
-        ? resBuilder.error(HttpCodes.BAD_REQUEST, 'Not found!')
-        : resBuilder.success(HttpCodes.OK, updatedCard)
+      if (!updatedCard) {
+        return resBuilder.error(
+          HttpCodes.BAD_REQUEST,
+          `Card with ${id} id was not updated or not found`,
+        )
+      }
+
+      return resBuilder.success(HttpCodes.OK, updatedCard)
     } catch (e) {
       next(e)
     }

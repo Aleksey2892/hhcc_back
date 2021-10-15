@@ -5,14 +5,20 @@ const {
   validationCreatedCard,
   validationUpdatedContact,
 } = require('../../../validation/cards')
+const resBuilder = require('./CardsResBuilder')
 
 router
-  .get('/cards', cardsController.get)
-  .post('/cards', validationCreatedCard, cardsController.create)
+  .get('/cards', resBuilder, cardsController.get)
+  .post('/cards', validationCreatedCard, resBuilder, cardsController.create)
 
 router
-  .get('/cards/:cardId', cardsController.getById)
-  .delete('/cards/:cardId', cardsController.remove)
-  .put('/cards/:cardId', validationUpdatedContact, cardsController.update)
+  .get('/cards/:id', resBuilder, cardsController.getById)
+  .delete('/cards/:id', resBuilder, cardsController.remove)
+  .put(
+    '/cards/:id',
+    validationUpdatedContact,
+    resBuilder,
+    cardsController.update,
+  )
 
 module.exports = router

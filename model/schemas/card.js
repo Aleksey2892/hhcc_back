@@ -9,6 +9,7 @@ const cardSchema = new Schema(
     cardName: {
       type: String,
       required: [true, 'card name is required'],
+      unique: true,
     },
     cardDate: {
       // format - year-month-day
@@ -49,6 +50,7 @@ const cardSchema = new Schema(
     },
     categories: {
       type: Array,
+      default: [],
       set: data => (!data ? [] : data),
     },
     description: {
