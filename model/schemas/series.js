@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const seriesSchema = new Schema({
-  serieName: {
+  seriesName: {
     type: String,
     required: [true, 'series name is required'],
     unique: true,

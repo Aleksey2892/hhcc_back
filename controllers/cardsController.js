@@ -1,5 +1,5 @@
 const HttpCodes = require('../constants/httpCodes')
-const Cards = require('../model/methods/Cards')
+const Cards = require('../model/collectionMethods/Cards')
 
 const cardsController = {
   async get(req, res, next) {
@@ -9,13 +9,16 @@ const cardsController = {
       const cardsCollection = await Cards.getCollection()
 
       if (!cardsCollection.length) {
-        return resBuilder.error(
-          HttpCodes.NOT_FOUND,
-          'Cards list is empty or server error',
-        )
+        return resBuilder.error({
+          code: HttpCodes.NOT_FOUND,
+          message: 'Cards list is empty or server error',
+        })
       }
 
-      return resBuilder.success(HttpCodes.OK, cardsCollection)
+      return resBuilder.success({
+        code: HttpCodes.OK,
+        data: cardsCollection,
+      })
     } catch (e) {
       next(e)
     }
@@ -29,13 +32,13 @@ const cardsController = {
       const cardById = await Cards.getById(id)
 
       if (!cardById) {
-        return resBuilder.error(
-          HttpCodes.NOT_FOUND,
-          `Card with ${id} id was not found`,
-        )
+        return resBuilder.error({
+          code: HttpCodes.NOT_FOUND,
+          message: `Card with ${id} id was not found`,
+        })
       }
 
-      return resBuilder.success(HttpCodes.OK, cardById)
+      return resBuilder.success({ code: HttpCodes.OK, data: cardById })
     } catch (e) {
       next(e)
     }
@@ -46,13 +49,20 @@ const cardsController = {
     const { resBuilder } = res
 
     try {
-      const newCard = await Cards.createCard(body)
+      const newCard = await Cards.createItem(body)
 
       if (!newCard) {
-        return resBuilder.error(HttpCodes.SERVER_ERROR, 'Card was not created!')
+        return resBuilder.error({
+          code: HttpCodes.SERVER_ERROR,
+          message: 'Card was not created!',
+        })
       }
 
-      return resBuilder.success(HttpCodes.OK, newCard)
+      return resBuilder.created({
+        code: HttpCodes.OK,
+        message: 'New card was created',
+        data: newCard,
+      })
     } catch (e) {
       next(e)
     }
@@ -66,17 +76,17 @@ const cardsController = {
       const removedCard = await Cards.removeItem(id)
 
       if (!removedCard) {
-        return resBuilder.error(
-          HttpCodes.SERVER_ERROR,
-          `Card with ${id} id was not deleted or not found`,
-        )
+        return resBuilder.error({
+          code: HttpCodes.SERVER_ERROR,
+          message: `Card with ${id} id was not deleted or not found`,
+        })
       }
 
-      return resBuilder.deleted(
-        HttpCodes.OK,
-        removedCard,
-        `Card with ${id} id was deleted`,
-      )
+      return resBuilder.deleted({
+        code: HttpCodes.OK,
+        message: `Card with ${id} id was deleted`,
+        data: removedCard,
+      })
     } catch (e) {
       next(e)
     }
@@ -90,16 +100,20 @@ const cardsController = {
     const { resBuilder } = res
 
     try {
-      const updatedCard = await Cards.updateCard(id, body)
+      const updatedCard = await Cards.updateItem(id, body)
 
       if (!updatedCard) {
-        return resBuilder.error(
-          HttpCodes.BAD_REQUEST,
-          `Card with ${id} id was not updated or not found`,
-        )
+        return resBuilder.error({
+          code: HttpCodes.BAD_REQUEST,
+          message: `Card with ${id} id was not updated or not found`,
+        })
       }
 
-      return resBuilder.success(HttpCodes.OK, updatedCard)
+      return resBuilder.updated({
+        code: HttpCodes.OK,
+        message: `Card with ${id} id was updated`,
+        data: updatedCard,
+      })
     } catch (e) {
       next(e)
     }
