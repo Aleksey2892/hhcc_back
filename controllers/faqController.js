@@ -1,19 +1,21 @@
 const HttpCodes = require('../constants/httpCodes')
-const Faq = require('../model/methods/Faq')
+const Faq = require('../model/collectionMethods/Faq')
 
-//TODO make and add resBuilder
 const faqController = {
   async get(_req, res, next) {
-    try {
-      const questions = await Faq.getAll()
+    const { resBuilder } = res
 
-      if (!questions) {
-        res.status(HttpCodes.SERVER_ERROR)
+    try {
+      const questions = await Faq.getCollection()
+
+      if (!questions.length) {
+        return resBuilder.error({
+          code: HttpCodes.SERVER_ERROR,
+          message: 'Faq list is empty or server error',
+        })
       }
 
-      return res
-        .status(HttpCodes.OK)
-        .json({ status: HttpCodes.OK, responseData: { questions } })
+      return resBuilder.success({ code: HttpCodes.OK, data: questions })
     } catch (error) {
       next(error)
     }

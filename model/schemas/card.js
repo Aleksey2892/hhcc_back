@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose')
-const { CardTypes, CardRarity } = require('../../constants/cardEnums')
+const { card } = require('../../constants/enums')
 
-const cardTypesOptions = Object.values(CardTypes)
-const cardRarityOptions = Object.values(CardRarity)
+const cardTypesOptions = Object.values(card.CardTypes)
+const cardRarityOptions = Object.values(card.CardRarity)
 
 const cardSchema = new Schema(
   {
