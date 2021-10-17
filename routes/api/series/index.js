@@ -4,8 +4,8 @@ const SeriesController = require('../../../controllers/SeriesController')
 
 router.get('/series', SeriesController.get)
 
-router.put('/series/:id', SeriesController.update)
-// .get('/series/:id', seriesController.getById)
-// .delete('/series/:id', seriesController.remove)
+router
+  .put('/series/:id', SeriesController.update)
+  .get('/series/:id', SeriesController.getById)
 
 module.exports = router

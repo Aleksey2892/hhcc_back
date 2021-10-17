@@ -1,6 +1,6 @@
 const HttpCodes = require('../../constants/httpCodes')
 
-class ResBuilder {
+class CustomResBuilder {
   #res
   constructor(res) {
     this.#res = res
@@ -18,7 +18,7 @@ class ResBuilder {
   }
 
   success(args) {
-    const { code = HttpCodes.OK, data = {}, message = 'ok' } = args
+    const { code = HttpCodes.OK, data, message = 'ok' } = args
 
     return this.#res.status(code).json({
       status: 'success',
@@ -28,41 +28,60 @@ class ResBuilder {
     })
   }
 
-  created(args) {
+  successGetById(args) {
+    const { code = HttpCodes.OK, data, message = 'found' } = args
+
+    return this.#res.status(code).json({
+      status: 'success',
+      code,
+      message,
+      data: {
+        foundItem: data,
+      },
+    })
+  }
+
+  successCreated(args) {
     const { code = HttpCodes.OK, data, message = 'created' } = args
 
     return this.#res.status(code).json({
       status: 'success',
       code,
       message,
-      created: data,
+      data: {
+        created: data,
+      },
     })
   }
 
-  updated(args) {
+  successUpdated(args) {
     const { code = HttpCodes.OK, data, message = 'updated' } = args
 
     return this.#res.status(code).json({
       status: 'success',
       code,
       message,
-      updated: data,
+      data: {
+        updated: data,
+      },
     })
   }
 
-  deleted(args) {
+  successDeleted(args) {
     const { code = HttpCodes.OK, data, message = 'deleted' } = args
 
     return this.#res.status(code).json({
       status: 'success',
       code,
       message,
-      deleted: data,
+      data: {
+        deleted: data,
+      },
     })
   }
 }
 
 module.exports = (req, res, next) => {
-  res.resBuilder = new ResBuilder(res)
+  res.resBuilder = new CustomResBuilder(res)
   next()
 }
