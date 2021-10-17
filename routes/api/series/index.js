@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const seriesController = require('../../../controllers/seriesController')
+const SeriesController = require('../../../controllers/SeriesController')
 
-router.get('/series', seriesController.get)
+router.get('/series', SeriesController.get)
 
-router.put('/series/:id', seriesController.update)
+router.put('/series/:id', SeriesController.update)
 // .get('/series/:id', seriesController.getById)
 // .delete('/series/:id', seriesController.remove)
 

@@ -1,4 +1,4 @@
-const SeriesModel = require('../../model/schemas/series')
+const seriesModel = require('../../model/schemas/series')
 const BaseMethods = require('./BaseMethods')
 
 class SeriesMethods extends BaseMethods {
@@ -7,4 +7,4 @@ class SeriesMethods extends BaseMethods {
   }
 }
 
-module.exports = new SeriesMethods(SeriesModel)
+module.exports = new SeriesMethods(seriesModel)

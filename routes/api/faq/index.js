@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const faqController = require('../../../controllers/faqController')
+const FaqController = require('../../../controllers/FaqController')
 
-router.get('/faq', faqController.get)
+router.get('/faq', FaqController.get)
 
 module.exports = router
