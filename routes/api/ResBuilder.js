@@ -1,6 +1,6 @@
 const HttpCodes = require('../../constants/httpCodes')
 
-class BaseResBuilder {
+class ResBuilder {
   #res
   constructor(res) {
     this.#res = res
@@ -63,6 +63,6 @@ class BaseResBuilder {
 }
 
 module.exports = (req, res, next) => {
-  res.resBuilder = new BaseResBuilder(res)
+  res.resBuilder = new ResBuilder(res)
   next()
 }

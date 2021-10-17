@@ -1,10 +1,10 @@
 const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
-const BaseResBuilder = require('./routes/api/BaseResBuilder')
+const BaseResBuilder = require('./routes/api/ResBuilder')
 const HttpCodes = require('./constants/httpCodes')
 const seriesRoute = require('./routes/api/series')
-const cardsRoute = require('./routes/api/cards/cards')
+const cardsRoute = require('./routes/api/cards')
 const faqRoute = require('./routes/api/faq')
 
 const app = express()
