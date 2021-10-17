@@ -4,7 +4,7 @@ const cors = require('cors')
 const BaseResBuilder = require('./routes/api/BaseResBuilder')
 const HttpCodes = require('./constants/httpCodes')
 const seriesRoute = require('./routes/api/series')
-const cardsRoute = require('./routes/api/cards')
+const cardsRoute = require('./routes/api/cards/cards')
 const faqRoute = require('./routes/api/faq')
 
 const app = express()

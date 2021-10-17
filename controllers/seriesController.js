@@ -1,7 +1,7 @@
 const HttpCodes = require('../constants/httpCodes')
 const Series = require('../model/collectionMethods/Series')
 
-const seriesController = {
+module.exports = {
   async get(req, res, next) {
     const { resBuilder } = res
 
@@ -48,5 +48,3 @@ const seriesController = {
     }
   },
 }
-
-module.exports = seriesController

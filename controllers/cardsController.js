@@ -1,7 +1,7 @@
 const HttpCodes = require('../constants/httpCodes')
 const Cards = require('../model/collectionMethods/Cards')
 
-const cardsController = {
+module.exports = {
   async get(req, res, next) {
     const { resBuilder } = res
 
@@ -119,5 +119,3 @@ const cardsController = {
     }
   },
 }
-
-module.exports = cardsController

@@ -1,4 +1,4 @@
-const CardModel = require('../../model/schemas/card')
+const cardModel = require('../../model/schemas/card')
 const BaseMethods = require('./BaseMethods')
 
 class CardsMethods extends BaseMethods {
@@ -7,4 +7,4 @@ class CardsMethods extends BaseMethods {
   }
 }
 
-module.exports = new CardsMethods(CardModel)
+module.exports = new CardsMethods(cardModel)

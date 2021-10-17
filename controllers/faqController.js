@@ -1,7 +1,7 @@
 const HttpCodes = require('../constants/httpCodes')
 const Faq = require('../model/collectionMethods/Faq')
 
-const faqController = {
+module.exports = {
   async get(_req, res, next) {
     const { resBuilder } = res
 
@@ -21,5 +21,3 @@ const faqController = {
     }
   },
 }
-
-module.exports = faqController
