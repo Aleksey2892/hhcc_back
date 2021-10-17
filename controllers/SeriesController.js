@@ -3,8 +3,7 @@ const Series = require('../model/collectionMethods/Series')
 
 class SeriesController extends BaseController {
   constructor(options) {
-    const { methodsName, controllerName } = options
-    super({ methodsName, controllerName })
+    super(options)
   }
 }
 
