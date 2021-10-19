@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const seriesController = require('../../../controllers/seriesController')
+const guard = require('../../../helpers/guard')
 
 router.get('/series', seriesController.get)
 

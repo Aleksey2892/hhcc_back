@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, SchemaTypes } = require('mongoose')
 
 const seriesSchema = new Schema({
   seriesName: {
@@ -14,6 +14,10 @@ const seriesSchema = new Schema({
   urlLogo: {
     type: String,
     default: '',
+  },
+  user: {
+    type: SchemaTypes.ObjectId,
+    ref: 'user',
   },
 })
 

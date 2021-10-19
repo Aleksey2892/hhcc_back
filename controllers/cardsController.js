@@ -4,7 +4,6 @@ const Cards = require('../model/collectionMethods/Cards')
 const cardsController = {
   async get(req, res, next) {
     const { resBuilder } = res
-
     try {
       const cardsCollection = await Cards.getCollection()
 
