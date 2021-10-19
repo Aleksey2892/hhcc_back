@@ -1,4 +1,4 @@
-const FaqModel = require('../../model/schemas/faq')
+const faqModel = require('../../model/schemas/faq')
 const BaseMethods = require('./BaseMethods')
 
 class FaqMethods extends BaseMethods {
@@ -7,4 +7,4 @@ class FaqMethods extends BaseMethods {
   }
 }
 
-module.exports = new FaqMethods(FaqModel)
+module.exports = new FaqMethods(faqModel)

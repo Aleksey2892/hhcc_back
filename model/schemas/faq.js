@@ -1,4 +1,5 @@
-const { Schema, model,SchemaTypes } = require('mongoose')
+const { Schema, model, SchemaTypes } = require('mongoose')
+const { optionsForSchemas } = require('../../constants/options')
 
 const faqSchema = new Schema(
   {
@@ -16,22 +17,7 @@ const faqSchema = new Schema(
     }
   },
   {
-    versionKey: false,
-    timestamps: true,
-    toJSON: {
-      virtuals: true,
-      transform: function (doc, ret) {
-        delete ret._id
-        return ret
-      },
-    },
-    toObject: {
-      virtuals: true,
-      transform: function (doc, ret) {
-        delete ret._id
-        return ret
-      },
-    },
+    ...optionsForSchemas,
   },
 )
 

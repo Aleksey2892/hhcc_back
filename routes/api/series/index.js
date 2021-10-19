@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const seriesController = require('../../../controllers/seriesController')
+const SeriesController = require('../../../controllers/seriesController')
 const guard = require('../../../helpers/guard')
 
-router.get('/series', seriesController.get)
+router.get('/series', guard, SeriesController.get)
 
-router.put('/series/:id', seriesController.update)
-// .get('/series/:id', seriesController.getById)
-// .delete('/series/:id', seriesController.remove)
+router
+  .put('/series/:id', guard, SeriesController.update)
+  .get('/series/:id', guard, SeriesController.getById)
 
 module.exports = router
