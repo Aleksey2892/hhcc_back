@@ -6,6 +6,7 @@ const {
 } = require('../../../validation/cards')
 const CardsController = require('../../../controllers/СardsController')
 
+
 router
   .get('/cards', CardsController.get)
   .post('/cards', validationCreatedCard, CardsController.create)

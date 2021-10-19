@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, SchemaTypes } = require('mongoose')
 const { optionsForSchemas } = require('../../constants/options')
 
 const seriesSchema = new Schema(
@@ -16,6 +16,10 @@ const seriesSchema = new Schema(
     urlLogo: {
       type: String,
       default: '',
+    },
+    user: {
+      type: SchemaTypes.ObjectId,
+      ref: 'user',
     },
   },
   {

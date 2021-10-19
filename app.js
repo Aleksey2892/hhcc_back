@@ -6,6 +6,8 @@ const HttpCodes = require('./constants/httpCodes')
 const seriesRoute = require('./routes/api/series')
 const cardsRoute = require('./routes/api/cards')
 const faqRoute = require('./routes/api/faq')
+const userRoute = require('./routes/api/user')
+const guard = require('./helpers/guard')
 
 const app = express()
 
@@ -14,10 +16,11 @@ app.use(logger(formatsLogger))
 app.use(cors())
 app.use(express.json())
 
-app.use(implantResBuilder)
-app.use('/', seriesRoute)
-app.use('/', cardsRoute)
-app.use('/', faqRoute)
+app.use('/', userRoute)
+app.use(BaseResBuilder)
+app.use('/', guard, seriesRoute)
+app.use('/', guard, cardsRoute)
+app.use('/', guard, faqRoute)
 
 app.use((_req, res) => {
   res.status(HttpCodes.NOT_FOUND).json({ message: 'Not found' })

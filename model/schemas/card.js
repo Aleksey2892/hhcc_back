@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, SchemaTypes } = require('mongoose')
 const { card } = require('../../constants/enums')
 const { optionsForSchemas } = require('../../constants/options')
 
@@ -18,7 +18,8 @@ const cardSchema = new Schema(
     },
     series: {
       // autofield from series Name
-      type: String,
+      type: SchemaTypes.ObjectId,
+      ref: 'series',
     },
     cardNumber: {
       // X/21 (X is the number of the card, 21 - is autifielled from Number of series cards  )
@@ -26,7 +27,8 @@ const cardSchema = new Schema(
     },
     edition: {
       // autofield from edition
-      type: Number,
+      type: SchemaTypes.ObjectId,
+      ref: 'editions',
     },
     circulation: {
       type: Number,
