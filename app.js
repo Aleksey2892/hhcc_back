@@ -17,7 +17,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/', userRoute)
-app.use(BaseResBuilder)
+app.use(implantResBuilder)
 app.use('/', guard, seriesRoute)
 app.use('/', guard, cardsRoute)
 app.use('/', guard, faqRoute)
