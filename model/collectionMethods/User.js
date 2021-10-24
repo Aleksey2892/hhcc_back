@@ -1,24 +1,26 @@
-const User = require('../schemas/user')
+const userModel = require('../schemas/user')
+const BaseMethods = require('./BaseMethods')
 
-const create = async body => {
-  return await User.create(body)
+class UserMethods extends BaseMethods {
+  constructor(modelName) {
+    super(modelName)
+  }
+
+  create(body) {
+    return this.modelName.create(body)
+  }
+
+  findById(id) {
+    return this.modelName.findById(id)
+  }
+
+  findByLogin(login) {
+    return this.modelName.findOne({ login })
+  }
+
+  updateToken(id, token) {
+    return this.modelName.updateOne({ _id: id }, { token })
+  }
 }
 
-const findById = async id => {
-  return await User.findById(id)
-}
-
-const findByLogin = async login => {
-  return await User.findOne({ login })
-}
-
-const updateToken = async (id, token) => {
-  return await User.updateOne({ _id: id }, { token })
-}
-
-module.exports = {
-  findById,
-  findByLogin,
-  updateToken,
-  create,
-}
+module.exports = new UserMethods(userModel)

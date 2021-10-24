@@ -1,10 +1,11 @@
 const HttpCodes = require('../constants/httpCodes')
 const User = require('../model/collectionMethods/User')
+const BaseController = require('./BaseController')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const SECRET_KEY = process.env.SECRET_KEY
 
-const userController = {
+class UserController extends BaseController {
   async create(req, res, next) {
     try {
       const user = await User.findByLogin(req.body.login)
@@ -26,7 +27,7 @@ const userController = {
     } catch (e) {
       next(e)
     }
-  },
+  }
 
   async login(req, res, next) {
     try {
@@ -54,7 +55,7 @@ const userController = {
     } catch (e) {
       next(e)
     }
-  },
+  }
 
   async logout(req, res, next) {
     try {
@@ -65,7 +66,10 @@ const userController = {
     } catch (e) {
       next(e)
     }
-  },
+  }
 }
 
-module.exports = userController
+module.exports = new UserController({
+  methodsName: User,
+  controllerName: 'User',
+})
