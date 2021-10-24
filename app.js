@@ -1,6 +1,8 @@
 const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
+const helmet = require('helmet')
+const rateLimit = require('express-rate-limit')
 const implantResBuilder = require('./routes/api/implantResBuilder')
 const HttpCodes = require('./constants/httpCodes')
 const seriesRoute = require('./routes/api/series')
@@ -8,14 +10,17 @@ const cardsRoute = require('./routes/api/cards')
 const faqRoute = require('./routes/api/faq')
 const userRoute = require('./routes/api/user')
 const guard = require('./helpers/guard')
+const limiterAPI = require('./helpers/limiter')
 
 const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
+app.use(helmet())
 app.use(logger(formatsLogger))
 app.use(cors())
-app.use(express.json())
+app.use(express.json({ limit: 10000 })) // the limit is set in opposition DDoS attacks
 
+app.use('/', rateLimit(limiterAPI))
 app.use('/', userRoute)
 app.use(implantResBuilder)
 app.use('/', guard, seriesRoute)
@@ -31,6 +36,11 @@ app.use((err, _req, res, _next) => {
     message: err.message || 'unknown error',
     status: err.status || HttpCodes.SERVER_ERROR,
   })
+})
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled Rejection at:', promise, 'reason:', reason)
+  // Application specific logging, throwing an error, or other logic here
 })
 
 module.exports = app
