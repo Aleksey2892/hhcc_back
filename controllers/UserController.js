@@ -1,5 +1,5 @@
 const HttpCodes = require('../constants/httpCodes')
-const User = require('../model/collectionMethods/User')
+const User = require('../model/collectionMethods/Users')
 const BaseController = require('./BaseController')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()

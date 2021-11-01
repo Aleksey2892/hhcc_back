@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, SchemaTypes } = require('mongoose')
 const { optionsForSchemas } = require('../../constants/options')
 
 const editionSchema = new Schema(
@@ -7,10 +7,15 @@ const editionSchema = new Schema(
       type: String,
       required: [true, 'editionName is required'],
     },
+    series: {
+      type: Schema.Types.ObjectId,
+      ref: 'series',
+    },
   },
+
   {
     ...optionsForSchemas,
   },
 )
 
-module.exports = model('edition', editionSchema, 'edition')
+module.exports = model('editions', editionSchema, 'editions')
