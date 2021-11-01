@@ -3,7 +3,9 @@ const router = express.Router()
 const SeriesController = require('../../../controllers/seriesController')
 const guard = require('../../../helpers/guard')
 
-router.get('/series', guard, SeriesController.get)
+router
+  .get('/series', guard, SeriesController.get)
+  .post('/series', guard, SeriesController.create)
 
 router
   .put('/series/:id', guard, SeriesController.update)

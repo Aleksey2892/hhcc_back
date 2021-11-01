@@ -18,10 +18,17 @@ const seriesSchema = new Schema(
       default: '',
     },
     user: {
-      type: SchemaTypes.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'user',
     },
+    editions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'editions',
+      },
+    ],
   },
+
   {
     ...optionsForSchemas,
   },
