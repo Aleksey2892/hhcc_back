@@ -5,7 +5,7 @@ const {
   validationUpdatedContact,
 } = require('../../../validation/cards')
 const CardsController = require('../../../controllers/СardsController')
-
+const upload = require('../../../helpers/upload')
 
 router
   .get('/cards', CardsController.get)
@@ -15,5 +15,7 @@ router
   .get('/cards/:id', CardsController.getById)
   .put('/cards/:id', validationUpdatedContact, CardsController.update)
   .delete('/cards/:id', CardsController.remove)
+  .patch('/cards/png/:id', upload.single('png'), CardsController.uploadPng)
+  .patch('/cards/webm/:id', upload.single('webm'), CardsController.uploadWebm)
 
 module.exports = router
