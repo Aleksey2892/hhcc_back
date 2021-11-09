@@ -37,9 +37,17 @@ const cardSchema = new Schema(
       // should be uploud only if goldenCard is true
       type: String,
     },
+    idCloudJpg: {
+      type: String,
+      default: null,
+    },
     uploadCardHighResWebm: {
       // should be uploud only if goldenCard is true
       type: String,
+    },
+    idCloudWebm: {
+      type: String,
+      default: null,
     },
     type: {
       type: String,
