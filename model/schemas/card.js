@@ -36,6 +36,7 @@ const cardSchema = new Schema(
     uploadCardThumbnailJpg: {
       // should be uploud only if goldenCard is true
       type: String,
+      default: null,
     },
     idCloudJpg: {
       type: String,
@@ -44,6 +45,7 @@ const cardSchema = new Schema(
     uploadCardHighResWebm: {
       // should be uploud only if goldenCard is true
       type: String,
+      default: null,
     },
     idCloudWebm: {
       type: String,
@@ -74,6 +76,7 @@ const cardSchema = new Schema(
     },
     openseaLink: {
       type: String,
+      default: null,
     },
     artist: {
       type: String,

@@ -2,11 +2,11 @@ const multer = require('multer')
 const HttpCodes = require('../constants/httpCodes')
 
 require('dotenv').config()
-const UPLOUD_DIR = process.env.UPLOUD_DIR
+const UPLOAD_DIR = process.env.UPLOAD_DIR
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, UPLOUD_DIR)
+    cb(null, UPLOAD_DIR)
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname)
