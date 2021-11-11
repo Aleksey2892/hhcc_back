@@ -1,4 +1,4 @@
-const { Schema, model, SchemaTypes } = require('mongoose')
+const { Schema, model } = require('mongoose')
 const { optionsForSchemas } = require('../../constants/options')
 
 const editionSchema = new Schema(
@@ -11,6 +11,7 @@ const editionSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'series',
     },
+    cards: [{ type: Schema.Types.ObjectId, ref: 'cards' }],
   },
 
   {

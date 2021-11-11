@@ -1,4 +1,5 @@
 const seriesModel = require('../../model/schemas/series')
+const editionModel = require('../../model/schemas/edition')
 const BaseMethods = require('./BaseMethods')
 
 class SeriesMethods extends BaseMethods {
@@ -7,7 +8,9 @@ class SeriesMethods extends BaseMethods {
   }
 
   getCollection() {
-    return this.modelName.find({}).populate('editions')
+    return this.modelName
+      .find({})
+      .populate({ path: 'editions', model: editionModel })
   }
 }
 

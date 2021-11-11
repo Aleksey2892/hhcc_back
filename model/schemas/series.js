@@ -1,4 +1,4 @@
-const { Schema, model, SchemaTypes } = require('mongoose')
+const { Schema, model } = require('mongoose')
 const { optionsForSchemas } = require('../../constants/options')
 
 const seriesSchema = new Schema(
@@ -17,14 +17,16 @@ const seriesSchema = new Schema(
       type: String,
       default: '',
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
-    },
     editions: [
       {
         type: Schema.Types.ObjectId,
         ref: 'editions',
+      },
+    ],
+    cards: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'cards',
       },
     ],
   },

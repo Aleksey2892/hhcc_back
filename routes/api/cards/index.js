@@ -9,7 +9,7 @@ const upload = require('../../../helpers/upload')
 
 router
   .get('/cards', CardsController.get)
-  .post('/cards', validationCreatedCard, CardsController.create)
+  .post('/cards/:editionId', validationCreatedCard, CardsController.create)
 
 router
   .get('/cards/:id', CardsController.getById)

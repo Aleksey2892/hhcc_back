@@ -20,7 +20,7 @@ class cloudUploadService {
   }
 
   async deleteOldAvatar(id) {
-    cloudinary.uploader.destroy(id, (err, result) => {
+    await cloudinary.uploader.destroy(id, (err, result) => {
       console.log(result, err)
     })
   }
