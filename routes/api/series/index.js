@@ -8,7 +8,7 @@ router
   .post('/series', guard, SeriesController.create)
 
 router
-  .put('/series/:id', guard, SeriesController.update)
-  .get('/series/:id', guard, SeriesController.getById)
+  .put('/series/:seriesId', guard, SeriesController.update)
+  .get('/series/:seriesId', guard, SeriesController.getById)
 
 module.exports = router
