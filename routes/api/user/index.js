@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const UserController = require('../../../controllers/UserController')
+const UsersController = require('../../../controllers/UsersController')
 const guard = require('../../../helpers/guard')
 
-router.post('/create', UserController.create)
-router.post('/login', UserController.login)
-router.post('/logout', guard, UserController.logout)
+router.post('/create', UsersController.create)
+router.post('/login', UsersController.login)
+router.post('/logout', guard, UsersController.logout)
 
 module.exports = router

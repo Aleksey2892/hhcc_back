@@ -18,7 +18,7 @@ class CustomResBuilder {
   }
 
   success(args) {
-    const { code = HttpCodes.OK, data, message = 'ok' } = args
+    const { code = HttpCodes.OK, message = 'ok', data } = args
 
     return this.#res.status(code).json({
       status: 'success',
@@ -29,7 +29,7 @@ class CustomResBuilder {
   }
 
   successGetById(args) {
-    const { code = HttpCodes.OK, data, message = 'found' } = args
+    const { code = HttpCodes.OK, message = 'found', data } = args
 
     return this.#res.status(code).json({
       status: 'success',
@@ -42,7 +42,7 @@ class CustomResBuilder {
   }
 
   successCreated(args) {
-    const { code = HttpCodes.OK, data, message = 'created' } = args
+    const { code = HttpCodes.OK, message = 'created', data } = args
 
     return this.#res.status(code).json({
       status: 'success',
@@ -55,7 +55,7 @@ class CustomResBuilder {
   }
 
   successUpdated(args) {
-    const { code = HttpCodes.OK, data, message = 'updated' } = args
+    const { code = HttpCodes.OK, message = 'updated', data } = args
 
     return this.#res.status(code).json({
       status: 'success',
@@ -68,7 +68,7 @@ class CustomResBuilder {
   }
 
   successDeleted(args) {
-    const { code = HttpCodes.OK, data, message = 'deleted' } = args
+    const { code = HttpCodes.OK, message = 'deleted', data } = args
 
     return this.#res.status(code).json({
       status: 'success',
