@@ -1,17 +1,9 @@
 const userModel = require('../schemas/user')
 const BaseMethods = require('./BaseMethods')
 
-class UserMethods extends BaseMethods {
+class UsersMethods extends BaseMethods {
   constructor(modelName) {
     super(modelName)
-  }
-
-  create(body) {
-    return this.modelName.create(body)
-  }
-
-  findById(id) {
-    return this.modelName.findById(id)
   }
 
   findByLogin(login) {
@@ -23,4 +15,4 @@ class UserMethods extends BaseMethods {
   }
 }
 
-module.exports = new UserMethods(userModel)
+module.exports = new UsersMethods(userModel)

@@ -4,7 +4,6 @@ module.exports = class BaseMethods {
     this.modelName = modelName
   }
 
-  // return this.modelName.find({}.populate({ path: "edition, series" }))
   getCollection() {
     return this.modelName.find({})
   }

@@ -22,8 +22,8 @@ app.use(cors())
 app.use(express.json({ limit: 10000 })) // the limit is set in opposition DDoS attacks
 
 app.use('/', rateLimit(limiterAPI))
-app.use('/', userRoute)
 app.use(implantResBuilder)
+app.use('/', userRoute)
 app.use('/', guard, seriesRoute)
 app.use('/', guard, editionsRoute)
 app.use('/', guard, cardsRoute)
