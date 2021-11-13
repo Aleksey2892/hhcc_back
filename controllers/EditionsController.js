@@ -1,5 +1,6 @@
 const BaseController = require('./BaseController')
 const Editions = require('../model/collectionMethods/Editions')
+const Series = require('../model/collectionMethods/Series')
 const HttpCodes = require('../constants/httpCodes')
 
 class EditionsController extends BaseController {
@@ -8,15 +9,22 @@ class EditionsController extends BaseController {
   }
 
   create = async (req, res, next) => {
-    const { body = null } = req
+    const {
+      body = null,
+      params: { seriesId = null },
+    } = req
     const { resBuilder } = res
-
-    body.owner = '6168afcb36aa10991efb43e4'
+    body.series = seriesId
 
     try {
+      const series = await Series.getById(seriesId)
       const newItem = await this.methodsName.createItem(body)
 
-      if (!newItem) {
+      if (series && newItem) {
+        await Series.updateItem(seriesId, { $push: { editions: newItem._id } })
+      }
+
+      if (!newItem || !series) {
         return resBuilder.error({
           code: HttpCodes.SERVER_ERROR,
           message: `[${this.controllerName}] was not created!`,

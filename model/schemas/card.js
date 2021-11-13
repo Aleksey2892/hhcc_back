@@ -1,4 +1,4 @@
-const { Schema, model, SchemaTypes } = require('mongoose')
+const { Schema, model } = require('mongoose')
 const { card } = require('../../constants/enums')
 const { optionsForSchemas } = require('../../constants/options')
 
@@ -18,7 +18,7 @@ const cardSchema = new Schema(
     },
     series: {
       // autofield from series Name
-      type: SchemaTypes.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'series',
     },
     cardNumber: {
@@ -27,7 +27,7 @@ const cardSchema = new Schema(
     },
     edition: {
       // autofield from edition
-      type: SchemaTypes.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'editions',
     },
     circulation: {
