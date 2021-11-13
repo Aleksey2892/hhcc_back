@@ -24,7 +24,6 @@ app.use(cors())
 app.use(express.json({ limit: 10000 })) // the limit is set in opposition DDoS attacks
 
 app.use('/', rateLimit(limiterAPI))
-app.use('/', userRoute)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(implantResBuilder)
 app.use('/', userRoute)

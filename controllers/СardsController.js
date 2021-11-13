@@ -12,6 +12,32 @@ class CardsController extends BaseController {
     super(options)
   }
 
+  get = async (req, res, next) => {
+    const {
+      body = null,
+      params: { editionId = null },
+    } = req
+    const { resBuilder } = res
+
+    try {
+      const collection = await this.methodsName.getCollection(editionId)
+
+      if (!collection.length) {
+        return resBuilder.error({
+          code: HttpCodes.NOT_FOUND,
+          message: `[${this.controllerName}] list is empty or server error!`,
+        })
+      }
+
+      return resBuilder.success({
+        code: HttpCodes.OK,
+        data: collection,
+      })
+    } catch (e) {
+      next(e)
+    }
+  }
+
   create = async (req, res, next) => {
     const {
       body = null,
