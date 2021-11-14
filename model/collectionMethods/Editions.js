@@ -8,9 +8,7 @@ class EditionsMethods extends BaseMethods {
   }
 
   getCollection(seriesId) {
-    return this.modelName
-      .find({ series: seriesId })
-      .populate({ path: 'cards', model: cardModel })
+    return this.modelName.find({ series: seriesId })
   }
 }
 
