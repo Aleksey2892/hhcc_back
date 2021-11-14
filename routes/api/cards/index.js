@@ -8,7 +8,7 @@ const CardsController = require('../../../controllers/СardsController')
 const upload = require('../../../helpers/upload')
 
 router
-  .get('/cards', CardsController.get)
+  .get('/cards/:editionId', CardsController.get)
   .post('/cards/:editionId', validationCreatedCard, CardsController.create)
 
 router

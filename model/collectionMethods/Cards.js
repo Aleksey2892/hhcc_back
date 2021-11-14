@@ -6,6 +6,10 @@ class CardsMethods extends BaseMethods {
     super(modelName)
   }
 
+  getCollection(editionId) {
+    return this.modelName.find({ edition: editionId })
+  }
+
   updatePng(id, imgUrl, idCloudJpg = null) {
     return cardModel.findOneAndUpdate(
       { _id: id },

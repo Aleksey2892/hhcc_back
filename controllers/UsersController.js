@@ -17,11 +17,6 @@ class UsersController extends BaseController {
       const user = await Users.findByLogin(req.body.login)
 
       if (user) {
-        // return res.status(HttpCodes.CONFLICT).json({
-        //   status: 'error',
-        //   code: HttpCodes.CONFLICT,
-        //   message: 'Login is already used',
-        // })
         return resBuilder.error({
           code: HttpCodes.CONFLICT,
           message: 'Login is already used',
@@ -29,11 +24,6 @@ class UsersController extends BaseController {
       }
 
       const { id, login } = await Users.createItem(req.body)
-      // return res.status(HttpCodes.CREATED).json({
-      //   status: 'success',
-      //   code: HttpCodes.CREATED,
-      //   data: { id, login },
-      // })
       return resBuilder.successCreated({
         code: HttpCodes.CREATED,
         data: { id, login },
@@ -51,11 +41,6 @@ class UsersController extends BaseController {
       const isValidPassword = await user.isValidPassword(req.body.password)
 
       if (!user || !isValidPassword) {
-        // return res.status(HttpCodes.UNAUTHORIZED).json({
-        //   status: 'error',
-        //   code: HttpCodes.UNAUTHORIZED,
-        //   message: 'Invalid credentials',
-        // })
         return resBuilder.error({
           code: HttpCodes.UNAUTHORIZED,
           message: 'Invalid credentials',
@@ -67,13 +52,8 @@ class UsersController extends BaseController {
       const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' })
       await Users.updateToken(id, token)
 
-      // return res.status(HttpCodes.CREATED).json({
-      //   status: 'success',
-      //   code: HttpCodes.CREATED,
-      //   data: { token },
-      // })
-      return resBuilder.successCreated({
-        code: HttpCodes.CREATED,
+      return resBuilder.success({
+        code: HttpCodes.OK,
         data: { token },
       })
     } catch (e) {
@@ -88,7 +68,6 @@ class UsersController extends BaseController {
       const id = req.user.id
       await Users.updateToken(id, null)
 
-      // return res.status(HttpCodes.NO_CONTENT).json({})
       return resBuilder.success({ code: HttpCodes.NO_CONTENT })
     } catch (e) {
       next(e)
@@ -98,5 +77,5 @@ class UsersController extends BaseController {
 
 module.exports = new UsersController({
   methodsName: Users,
-  controllerName: 'Users',
+  controllerName: 'User',
 })
