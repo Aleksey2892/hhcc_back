@@ -15,7 +15,9 @@ const seriesSchema = new Schema(
     },
     urlLogo: {
       type: String,
-      default: '',
+    },
+    idCloudLogo: {
+      type: String,
     },
     editions: [
       {

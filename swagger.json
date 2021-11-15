@@ -139,7 +139,7 @@
           "description": "Series's object",
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/PostSeriesRequest"
               }
@@ -177,11 +177,23 @@
         "tags": ["Series"],
         "summary": "Update one series",
         "security": [{ "Bearer": [] }],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "seriesId",
+            "in": "path",
+            "description": "Id of the series you want to update",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "requestBody": {
-          "description": "Series's object",
-          "required": true,
+          "description": "Series's object. At least one field is required",
           "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PutSeriesRequest"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PostSeriesRequest"
@@ -195,7 +207,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostSeriesResponse"
+                  "$ref": "#/components/schemas/PutSeriesResponse"
                 }
               }
             }
@@ -218,7 +230,15 @@
         "tags": ["Series"],
         "summary": "Find series by ID",
         "security": [{ "Bearer": [] }],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "seriesId",
+            "in": "path",
+            "description": "Id of the series you want to find",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "201": {
             "description": "Successful operation",
@@ -724,12 +744,13 @@
           "login": {
             "type": "string",
             "description": "User's login",
-            "format": "login"
+            "format": "login",
+            "example": "test10"
           },
           "password": {
             "type": "string",
             "description": "User's password",
-            "example": "qwerty123"
+            "example": "jsdhgjsh33"
           }
         }
       },
@@ -918,6 +939,11 @@
             "type": "string",
             "description": "Series's name",
             "example": "Series1"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "Series's logo"
           }
         }
       },
@@ -937,6 +963,70 @@
           "urlLogo": {
             "type": "string",
             "description": "Series's logo"
+          },
+          "idCloudLogo": {
+            "type": "string",
+            "description": "Cloudinary document service versionKey (ignore)"
+          },
+          "editions": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "Series's id",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        }
+      },
+      "PutSeriesRequest": {
+        "type": "object",
+        "properties": {
+          "seriesName": {
+            "type": "string",
+            "description": "Series's name",
+            "example": "Series1"
+          },
+          "totalCardsNumber": {
+            "type": "integer",
+            "description": "Total cards number",
+            "example": 21
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "Series's logo"
+          }
+        }
+      },
+      "PutSeriesResponse": {
+        "type": "object",
+        "properties": {
+          "seriesName": {
+            "type": "string",
+            "description": "Series's name",
+            "example": "Series1"
+          },
+          "totalCardsNumber": {
+            "type": "integer",
+            "description": "How many cards in exactly series",
+            "example": "0"
+          },
+          "urlLogo": {
+            "type": "string",
+            "description": "Series's logo"
+          },
+          "idCloudLogo": {
+            "type": "string",
+            "description": "Cloudinary document service versionKey (ignore)"
           },
           "editions": {
             "type": "array",
