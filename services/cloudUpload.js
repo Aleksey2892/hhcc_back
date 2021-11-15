@@ -11,6 +11,14 @@ cloudinary.config({
 const uploadCloud = promisify(cloudinary.uploader.upload)
 
 class cloudUploadService {
+  async saveSeriesLogo(pathFile, idCloudJpg) {
+    const { public_id, secure_url } = await uploadCloud(pathFile, {
+      public_id: idCloudJpg?.replace('cardsJpg/', ''),
+      folder: 'seriesLogo',
+    })
+    return { idCloudLogo: public_id, urlLogo: secure_url }
+  }
+
   async saveImg(pathFile, idCloudJpg) {
     const { public_id, secure_url } = await uploadCloud(pathFile, {
       public_id: idCloudJpg?.replace('cardsJpg/', ''),

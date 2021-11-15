@@ -14,6 +14,14 @@ class SeriesMethods extends BaseMethods {
       .populate({ path: 'editions', model: editionModel })
       .populate({ path: 'cards', model: cardModel })
   }
+
+  updateLogo(id, urlLogo, idCloudLogo = null) {
+    return cardModel.findOneAndUpdate(
+      { _id: id },
+      { urlLogo, idCloudLogo },
+      { new: true },
+    )
+  }
 }
 
 module.exports = new SeriesMethods(seriesModel)
