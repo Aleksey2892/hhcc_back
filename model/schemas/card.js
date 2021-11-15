@@ -54,7 +54,7 @@ const cardSchema = new Schema(
     type: {
       type: String,
       enum: cardTypesOptions,
-      required: [true, `type is required of ${cardRarityOptions}`],
+      required: [true, `type is required of ${cardTypesOptions}`],
     },
     rarity: {
       type: String,
