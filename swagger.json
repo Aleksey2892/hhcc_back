@@ -193,6 +193,11 @@
               "schema": {
                 "$ref": "#/components/schemas/PutSeriesRequest"
               }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostSeriesRequest"
+              }
             }
           }
         },

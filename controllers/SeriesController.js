@@ -69,6 +69,11 @@ class SeriesController extends BaseController {
         await fs.unlink(req.file.path)
       }
 
+      const series = await this.methodsName.getById(seriesId)
+      if (series.idCloudLogo) {
+        await uploads.deleteOldAvatar(series.idCloudLogo)
+      }
+
       const updatedItem = await this.methodsName.updateItem(seriesId, body)
 
       if (!updatedItem) {
@@ -76,10 +81,6 @@ class SeriesController extends BaseController {
           code: HttpCodes.SERVER_ERROR,
           message: `[${this.controllerName}] with [${seriesId}] id was not updated or not found!`,
         })
-      }
-
-      if (updatedItem.idCloudLogo) {
-        await uploads.deleteOldAvatar(updatedItem.idCloudLogo)
       }
 
       return resBuilder.successUpdated({
@@ -102,7 +103,7 @@ class SeriesController extends BaseController {
       if (!foundItemById) {
         return resBuilder.error({
           code: HttpCodes.NOT_FOUND,
-          message: `[${this.controllerName}] with [${id}] id was not found!`,
+          message: `[${this.controllerName}] with [${seriesId}] id was not found!`,
         })
       }
 
