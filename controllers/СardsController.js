@@ -111,8 +111,8 @@ class CardsController extends BaseController {
       const { idCloudWebm, webmUrl } = await uploads.saveWebm(req.file.path)
 
       const card = await Cards.getById(id)
-      if (card.idCloudJpg) {
-        await uploads.deleteOldAvatar(card.idCloudJpg)
+      if (card.idCloudWebm) {
+        await uploads.deleteOldAvatar(card.idCloudWebm)
       }
 
       await fs.unlink(req.file.path)
@@ -121,6 +121,37 @@ class CardsController extends BaseController {
         code: HttpCodes.OK,
         message: 'The new card Webm uploaded',
         data: webmUrl,
+      })
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  remove = async (req, res, next) => {
+    const { id = null } = req.params
+    const { resBuilder } = res
+
+    try {
+      const removedItem = await this.methodsName.removeItem(id)
+
+      if (!removedItem) {
+        return resBuilder.error({
+          code: HttpCodes.SERVER_ERROR,
+          message: `[${this.controllerName}] with [${id}] id was not deleted or not found!`,
+        })
+      }
+
+      await Editions.updateItem(removedItem.edition, {
+        $pull: { cards: removedItem._id },
+      })
+      await Series.updateItem(removedItem.series, {
+        $pull: { cards: removedItem._id },
+      })
+
+      return resBuilder.successDeleted({
+        code: HttpCodes.OK,
+        message: `[${this.controllerName}] with [${id}] id was deleted`,
+        data: removedItem,
       })
     } catch (e) {
       next(e)

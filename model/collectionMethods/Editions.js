@@ -12,6 +12,14 @@ class EditionsMethods extends BaseMethods {
       .find({ series: seriesId })
       .populate({ path: 'cards', model: cardModel })
   }
+
+  // updateItem(id, body) {
+  //   return this.modelName.findOneAndUpdate(
+  //     { _id: id },
+  //     { ...body },
+  //     { new: true },
+  //   )
+  // }
 }
 
 module.exports = new EditionsMethods(editionModel)

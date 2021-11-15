@@ -1,6 +1,7 @@
 const BaseController = require('./BaseController')
-const Editions = require('../model/collectionMethods/Editions')
 const Series = require('../model/collectionMethods/Series')
+const Editions = require('../model/collectionMethods/Editions')
+const Cards = require('../model/collectionMethods/Cards')
 const HttpCodes = require('../constants/httpCodes')
 
 class EditionsController extends BaseController {
@@ -61,6 +62,40 @@ class EditionsController extends BaseController {
         code: HttpCodes.OK,
         message: `New [${this.controllerName}] was created`,
         data: newItem,
+      })
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  remove = async (req, res, next) => {
+    const { editionId = null } = req.params
+    const { resBuilder } = res
+
+    try {
+      const removedItem = await this.methodsName.removeItem(editionId)
+      const editionCards = await Cards.getCollection(editionId)
+
+      if (!removedItem) {
+        return resBuilder.error({
+          code: HttpCodes.SERVER_ERROR,
+          message: `[${this.controllerName}] with [${editionId}] id was not deleted or not found!`,
+        })
+      }
+
+      // !TODO удалить все карточки которые принадлежат конкретно удаленному эдишину в сериях
+      // !TODO удалить все карточки из базы данных которые принадлежат конкретному эдишну
+      await Series.updateItem(removedItem.series, {
+        $pull: { editions: removedItem._id },
+      })
+      await Cards.updateItem(removedItem.cards, {
+        $pull: { editions: removedItem._id },
+      })
+
+      return resBuilder.successDeleted({
+        code: HttpCodes.OK,
+        message: `[${this.controllerName}] with [${editionId}] id was deleted`,
+        data: removedItem,
       })
     } catch (e) {
       next(e)
