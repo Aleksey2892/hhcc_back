@@ -26,9 +26,10 @@ class CardsMethods extends BaseMethods {
     )
   }
 
-  // найти метод, который удалит все связанные карточки
-  removeBindedCards(id) {
-    return this.modelName.remove({})
+  deleteMany(arrayOfObjToDelete) {
+    return this.modelName.deleteMany({
+      _id: { $in: arrayOfObjToDelete },
+    })
   }
 }
 
