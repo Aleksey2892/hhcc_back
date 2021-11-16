@@ -10,6 +10,14 @@ class EditionsMethods extends BaseMethods {
   getCollection(seriesId) {
     return this.modelName.find({ series: seriesId })
   }
+
+  // updateItem(id, body) {
+  //   return this.modelName.findOneAndUpdate(
+  //     { _id: id },
+  //     { ...body },
+  //     { new: true },
+  //   )
+  // }
 }
 
 module.exports = new EditionsMethods(editionModel)

@@ -16,5 +16,6 @@ router
     SeriesController.update,
   )
   .get('/series/:seriesId', guard, SeriesController.getById)
+  .delete('/series/:seriesId', guard, SeriesController.remove)
 
 module.exports = router

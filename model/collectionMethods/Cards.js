@@ -25,6 +25,11 @@ class CardsMethods extends BaseMethods {
       { new: true },
     )
   }
+
+  // найти метод, который удалит все связанные карточки
+  removeBindedCards(id) {
+    return this.modelName.remove({})
+  }
 }
 
 module.exports = new CardsMethods(cardModel)

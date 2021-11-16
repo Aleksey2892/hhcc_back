@@ -27,4 +27,16 @@ module.exports = class BaseMethods {
   removeItem(id) {
     return this.modelName.findOneAndRemove({ _id: id })
   }
+
+  deleteMany(arrayOfObjToDelete) {
+    return this.modelName.deleteMany({
+      _id: { $in: arrayOfObjToDelete },
+    })
+  }
+
+  deleteAll(id) {
+    return this.modelName.deleteMany({
+      series: id,
+    })
+  }
 }
