@@ -4,7 +4,6 @@ module.exports = class BaseMethods {
     this.modelName = modelName
   }
 
-  // return this.modelName.find({}.populate({ path: "edition, series" }))
   getCollection() {
     return this.modelName.find({})
   }
@@ -27,5 +26,11 @@ module.exports = class BaseMethods {
 
   removeItem(id) {
     return this.modelName.findOneAndRemove({ _id: id })
+  }
+
+  deleteAll(id) {
+    return this.modelName.deleteMany({
+      series: id,
+    })
   }
 }

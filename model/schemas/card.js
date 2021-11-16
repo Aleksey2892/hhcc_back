@@ -18,15 +18,17 @@ const cardSchema = new Schema(
     },
     series: {
       // autofield from series Name
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'series',
     },
     cardNumber: {
-      // X/21 (X is the number of the card, 21 - is autifielled from Number of series cards  )
+      // X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )
       type: Number,
     },
     edition: {
       // autofield from edition
-      type: Number,
+      type: Schema.Types.ObjectId,
+      ref: 'editions',
     },
     circulation: {
       type: Number,
@@ -34,15 +36,25 @@ const cardSchema = new Schema(
     uploadCardThumbnailJpg: {
       // should be uploud only if goldenCard is true
       type: String,
+      default: null,
+    },
+    idCloudJpg: {
+      type: String,
+      default: null,
     },
     uploadCardHighResWebm: {
       // should be uploud only if goldenCard is true
       type: String,
+      default: null,
+    },
+    idCloudWebm: {
+      type: String,
+      default: null,
     },
     type: {
       type: String,
       enum: cardTypesOptions,
-      required: [true, `type is required of ${cardRarityOptions}`],
+      required: [true, `type is required of ${cardTypesOptions}`],
     },
     rarity: {
       type: String,
@@ -64,6 +76,7 @@ const cardSchema = new Schema(
     },
     openseaLink: {
       type: String,
+      default: null,
     },
     artist: {
       type: String,

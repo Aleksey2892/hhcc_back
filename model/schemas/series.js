@@ -11,13 +11,28 @@ const seriesSchema = new Schema(
     totalCardsNumber: {
       type: Number,
       required: true,
-      default: 21,
+      default: 0,
     },
     urlLogo: {
       type: String,
-      default: '',
     },
+    idCloudLogo: {
+      type: String,
+    },
+    editions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'editions',
+      },
+    ],
+    cards: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'cards',
+      },
+    ],
   },
+
   {
     ...optionsForSchemas,
   },

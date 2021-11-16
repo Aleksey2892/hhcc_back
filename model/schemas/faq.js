@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, SchemaTypes } = require('mongoose')
 const { optionsForSchemas } = require('../../constants/options')
 
 const faqSchema = new Schema(
@@ -11,6 +11,10 @@ const faqSchema = new Schema(
       type: String,
       required: [true, 'Answer is required'],
     },
+
+    user: {
+      type: SchemaTypes.ObjectId, ref: 'user'
+    }
   },
   {
     ...optionsForSchemas,

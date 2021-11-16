@@ -1,11 +1,14 @@
 require('dotenv').config()
 const app = require('../app')
 const db = require('../model/db')
+const createFolderIsNotExist = require('../helpers/createFolder')
 
 const PORT = process.env.PORT || 3000
+const UPLOAD_DIR = process.env.UPLOAD_DIR
 
 db.then(() => {
-  app.listen(PORT, () => {
+  app.listen(PORT, async () => {
+    await createFolderIsNotExist(UPLOAD_DIR)
     console.log(`Database connection successful. API work on port: ${PORT}...`)
   })
 }).catch(error => {

@@ -8,14 +8,15 @@ module.exports = class BaseController {
   }
 
   get = async (req, res, next) => {
+    const { resBuilder } = res
+
     try {
-      const { resBuilder } = res
       const collection = await this.methodsName.getCollection()
 
       if (!collection.length) {
         return resBuilder.error({
           code: HttpCodes.NOT_FOUND,
-          message: `"${this.controllerName}" list is empty or server error`,
+          message: `[${this.controllerName}] list is empty or server error!`,
         })
       }
 
@@ -38,11 +39,14 @@ module.exports = class BaseController {
       if (!foundItemById) {
         return resBuilder.error({
           code: HttpCodes.NOT_FOUND,
-          message: `"${this.controllerName}" with ${id} id was not found`,
+          message: `[${this.controllerName}] with [${id}] id was not found!`,
         })
       }
 
-      return resBuilder.success({ code: HttpCodes.OK, data: foundItemById })
+      return resBuilder.successGetById({
+        code: HttpCodes.OK,
+        data: foundItemById,
+      })
     } catch (e) {
       next(e)
     }
@@ -58,13 +62,13 @@ module.exports = class BaseController {
       if (!newItem) {
         return resBuilder.error({
           code: HttpCodes.SERVER_ERROR,
-          message: `"${this.controllerName}" was not created!`,
+          message: `[${this.controllerName}] was not created!`,
         })
       }
 
-      return resBuilder.created({
+      return resBuilder.successCreated({
         code: HttpCodes.OK,
-        message: `New "${this.controllerName}" was created!`,
+        message: `New [${this.controllerName}] was created`,
         data: newItem,
       })
     } catch (e) {
@@ -85,13 +89,13 @@ module.exports = class BaseController {
       if (!updatedItem) {
         return resBuilder.error({
           code: HttpCodes.BAD_REQUEST,
-          message: `"${this.controllerName}" with ${id} id was not updated or not found`,
+          message: `[${this.controllerName}] with [${id}] id was not updated or not found!`,
         })
       }
 
-      return resBuilder.updated({
+      return resBuilder.successUpdated({
         code: HttpCodes.OK,
-        message: `"${this.controllerName}" with ${id} id was updated`,
+        message: `[${this.controllerName}] with [${id}] id was updated`,
         data: updatedItem,
       })
     } catch (e) {
@@ -109,13 +113,13 @@ module.exports = class BaseController {
       if (!removedItem) {
         return resBuilder.error({
           code: HttpCodes.SERVER_ERROR,
-          message: `"${this.controllerName}" with ${id} id was not deleted or not found`,
+          message: `[${this.controllerName}] with [${id}] id was not deleted or not found!`,
         })
       }
 
-      return resBuilder.deleted({
+      return resBuilder.successDeleted({
         code: HttpCodes.OK,
-        message: `"${this.controllerName}" with ${id} id was deleted`,
+        message: `[${this.controllerName}] with [${id}] id was deleted`,
         data: removedItem,
       })
     } catch (e) {
