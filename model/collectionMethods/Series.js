@@ -9,10 +9,11 @@ class SeriesMethods extends BaseMethods {
   }
 
   getCollection() {
-    return this.modelName
-      .find({})
-      .populate({ path: 'editions', model: editionModel })
-      .populate({ path: 'cards', model: cardModel })
+    return this.modelName.find({}).populate({
+      path: 'editions',
+      model: editionModel,
+      populate: [{ path: 'cards', model: cardModel }],
+    })
   }
 }
 
