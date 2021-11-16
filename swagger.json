@@ -263,6 +263,38 @@
             "content": {}
           }
         }
+      },
+      "delete": {
+        "tags": ["Series"],
+        "summary": "Delete card",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "seriesId",
+            "in": "path",
+            "description": "Series's id you want to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request (invalid id) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Edition not found / Card not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
       }
     },
     "/editions/{seriesId}": {
@@ -323,7 +355,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PostSeriesResponse"
+                "$ref": "#/components/schemas/PostEditionResponse"
               }
             }
           }

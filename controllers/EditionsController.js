@@ -74,7 +74,6 @@ class EditionsController extends BaseController {
 
     try {
       const removedItem = await this.methodsName.removeItem(editionId)
-      const editionCards = await Cards.getCollection(editionId)
 
       if (!removedItem) {
         return resBuilder.error({
@@ -83,14 +82,21 @@ class EditionsController extends BaseController {
         })
       }
 
-      // !TODO удалить все карточки которые принадлежат конкретно удаленному эдишину в сериях
-      // !TODO удалить все карточки из базы данных которые принадлежат конкретному эдишну
-      await Series.updateItem(removedItem.series, {
-        $pull: { editions: removedItem._id },
-      })
-      await Cards.updateItem(removedItem.cards, {
-        $pull: { editions: removedItem._id },
-      })
+      const editionCards = await Cards.getCollection(editionId)
+      const idCards = editionCards.map(card => card._id)
+
+      await Series.updateItem(
+        removedItem.series,
+        {
+          $pull: {
+            editions: removedItem._id,
+            cards: { $in: idCards },
+          },
+        },
+        { multi: true },
+      )
+
+      await Cards.deleteMany(idCards)
 
       return resBuilder.successDeleted({
         code: HttpCodes.OK,

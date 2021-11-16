@@ -1,5 +1,7 @@
 const BaseController = require('./BaseController')
 const Series = require('../model/collectionMethods/Series')
+const Cards = require('../model/collectionMethods/Cards')
+const Editions = require('../model/collectionMethods/Editions')
 const cloudUploadService = require('../services/cloudUpload')
 const fs = require('fs').promises
 const HttpCodes = require('../constants/httpCodes')
@@ -110,6 +112,31 @@ class SeriesController extends BaseController {
       return resBuilder.successGetById({
         code: HttpCodes.OK,
         data: foundItemById,
+      })
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  remove = async (req, res, next) => {
+    const { seriesId = null } = req.params
+    const { resBuilder } = res
+
+    try {
+      const removedItem = await this.methodsName.removeItem(seriesId)
+      if (!removedItem) {
+        return resBuilder.error({
+          code: HttpCodes.SERVER_ERROR,
+          message: `[${this.controllerName}] with [${seriesId}] id was not deleted or not found!`,
+        })
+      }
+      await Editions.deleteAll(seriesId)
+      await Cards.deleteAll(seriesId)
+
+      return resBuilder.successDeleted({
+        code: HttpCodes.OK,
+        message: `[${this.controllerName}] with [${seriesId}] id was deleted`,
+        data: removedItem,
       })
     } catch (e) {
       next(e)
