@@ -44,11 +44,19 @@ class CardsController extends BaseController {
       params: { editionId = null },
     } = req
     const { resBuilder } = res
-    body.edition = editionId
 
     try {
       const edition = await Editions.getById(editionId)
+      body.edition = editionId
       body.series = edition.series
+
+      if (req.file) {
+        const uploads = new cloudUploadService()
+        let { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
+        body.uploadCardThumbnailJpg = imgUrl
+        body.idCloudJpg = idCloudJpg
+        await fs.unlink(req.file.path)
+      }
 
       const newItem = await this.methodsName.createItem(body)
 
