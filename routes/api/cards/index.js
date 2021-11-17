@@ -2,20 +2,30 @@ const express = require('express')
 const router = express.Router()
 const {
   validationCreatedCard,
-  validationUpdatedContact,
+  validationUpdatedCard,
 } = require('../../../validation/cards')
 const CardsController = require('../../../controllers/СardsController')
 const upload = require('../../../helpers/upload')
 
 router
   .get('/cards/:editionId', CardsController.get)
-  .post('/cards/:editionId', validationCreatedCard, CardsController.create)
+  .post(
+    '/cards/:editionId',
+    upload.single('file'),
+    validationCreatedCard,
+    CardsController.create,
+  )
 
 router
-  .get('/cards/:id', CardsController.getById)
-  .put('/cards/:id', validationUpdatedContact, CardsController.update)
-  .delete('/cards/:id', CardsController.remove)
-  .patch('/cards/png/:id', upload.single('png'), CardsController.uploadPng)
-  .patch('/cards/webm/:id', upload.single('webm'), CardsController.uploadWebm)
+  .get('/card/:id', CardsController.getById)
+  .put(
+    '/card/:id',
+    upload.single('file'),
+    validationUpdatedCard,
+    CardsController.update,
+  )
+  .delete('/card/:id', CardsController.remove)
+  .patch('/card/png/:id', upload.single('file'), CardsController.uploadPng)
+  .patch('/card/webm/:id', upload.single('file'), CardsController.uploadWebm)
 
 module.exports = router

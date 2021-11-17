@@ -6,6 +6,8 @@ router
   .get('/editions/:seriesId', EditionsController.get)
   .post('/editions/:seriesId', EditionsController.create)
 
-router.delete('/editions/:editionId', EditionsController.remove)
+router
+  .get('/edition/:editionId', EditionsController.getById)
+  .delete('/edition/:editionId', EditionsController.remove)
 
 module.exports = router
