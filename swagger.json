@@ -601,9 +601,9 @@
           "description": "Card's object",
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateCardRequest"
+                "$ref": "#/components/schemas/PostCardRequestWithJpeg"
               }
             }
           }

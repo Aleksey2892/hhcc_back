@@ -18,7 +18,12 @@ router
 
 router
   .get('/card/:id', CardsController.getById)
-  .put('/card/:id', validationUpdatedCard, CardsController.update)
+  .put(
+    '/card/:id',
+    upload.single('file'),
+    validationUpdatedCard,
+    CardsController.update,
+  )
   .delete('/card/:id', CardsController.remove)
   .patch('/card/png/:id', upload.single('file'), CardsController.uploadPng)
   .patch('/card/webm/:id', upload.single('file'), CardsController.uploadWebm)
