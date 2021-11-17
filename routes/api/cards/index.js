@@ -17,10 +17,10 @@ router
   )
 
 router
-  .get('/cards/:id', CardsController.getById)
-  .put('/cards/:id', validationUpdatedCard, CardsController.update)
-  .delete('/cards/:id', CardsController.remove)
-  .patch('/cards/png/:id', upload.single('file'), CardsController.uploadPng)
-  .patch('/cards/webm/:id', upload.single('file'), CardsController.uploadWebm)
+  .get('/card/:id', CardsController.getById)
+  .put('/card/:id', validationUpdatedCard, CardsController.update)
+  .delete('/card/:id', CardsController.remove)
+  .patch('/card/png/:id', upload.single('file'), CardsController.uploadPng)
+  .patch('/card/webm/:id', upload.single('file'), CardsController.uploadWebm)
 
 module.exports = router

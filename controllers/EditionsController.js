@@ -68,6 +68,29 @@ class EditionsController extends BaseController {
     }
   }
 
+  getById = async (req, res, next) => {
+    const { editionId = null } = req.params
+    const { resBuilder } = res
+
+    try {
+      const foundItemById = await this.methodsName.getById(editionId)
+
+      if (!foundItemById) {
+        return resBuilder.error({
+          code: HttpCodes.NOT_FOUND,
+          message: `[${this.controllerName}] with [${editionId}] id was not found!`,
+        })
+      }
+
+      return resBuilder.successGetById({
+        code: HttpCodes.OK,
+        data: foundItemById,
+      })
+    } catch (e) {
+      next(e)
+    }
+  }
+
   remove = async (req, res, next) => {
     const { editionId = null } = req.params
     const { resBuilder } = res
