@@ -2,10 +2,10 @@ const Joi = require('joi')
 const HttpCodes = require('../constants/httpCodes')
 
 const validateCreateCard = Joi.object({
-  cardName: Joi.string().alphanum().min(2).max(50).required(),
+  cardName: Joi.string().min(2).max(50).required(),
   cardDate: Joi.date().raw().optional(),
   series: Joi.string().optional(),
-  cardNumber: Joi.number().min(1).max(21).optional(),
+  cardNumber: Joi.string().min(1).max(21).optional(),
   edition: Joi.number().optional(),
   circulation: Joi.number().optional(),
   uploadCardThumbnailJpg: Joi.string().optional(),
@@ -23,10 +23,10 @@ const validateCreateCard = Joi.object({
 }).or('cardName', 'type', 'rarity')
 
 const validateUpdateCard = Joi.object({
-  cardName: Joi.string().alphanum().min(2).max(50).optional(),
+  cardName: Joi.string().min(2).max(50).optional(),
   cardDate: Joi.date().raw().optional(),
   series: Joi.string().optional(),
-  cardNumber: Joi.number().min(1).max(21).optional(),
+  cardNumber: Joi.string().min(1).max(21).optional(),
   edition: Joi.number().optional(),
   circulation: Joi.number().optional(),
   uploadCardThumbnailJpg: Joi.string().optional(),
@@ -75,10 +75,10 @@ const validate = async (schema, body, next) => {
 }
 
 module.exports = {
-  validationCreatedCard: (req, res, next) => {
+  validationCreatedCard: (req, _res, next) => {
     return validate(validateCreateCard, req.body, next)
   },
-  validationUpdatedContact: (req, res, next) => {
+  validationUpdatedCard: (req, _res, next) => {
     return validate(validateUpdateCard, req.body, next)
   },
 }

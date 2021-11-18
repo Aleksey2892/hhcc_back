@@ -5,13 +5,8 @@ const Cards = require('../model/collectionMethods/Cards')
 const HttpCodes = require('../constants/httpCodes')
 
 class EditionsController extends BaseController {
-  constructor(options) {
-    super(options)
-  }
-
   get = async (req, res, next) => {
     const {
-      body = null,
       params: { seriesId = null },
     } = req
     const { resBuilder } = res
@@ -62,6 +57,29 @@ class EditionsController extends BaseController {
         code: HttpCodes.OK,
         message: `New [${this.controllerName}] was created`,
         data: newItem,
+      })
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  getById = async (req, res, next) => {
+    const { editionId = null } = req.params
+    const { resBuilder } = res
+
+    try {
+      const foundItemById = await this.methodsName.getById(editionId)
+
+      if (!foundItemById) {
+        return resBuilder.error({
+          code: HttpCodes.NOT_FOUND,
+          message: `[${this.controllerName}] with [${editionId}] id was not found!`,
+        })
+      }
+
+      return resBuilder.successGetById({
+        code: HttpCodes.OK,
+        data: foundItemById,
       })
     } catch (e) {
       next(e)

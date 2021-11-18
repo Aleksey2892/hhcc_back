@@ -4,17 +4,12 @@ const Series = require('../model/collectionMethods/Series')
 const Editions = require('../model/collectionMethods/Editions')
 const HttpCodes = require('../constants/httpCodes')
 const fs = require('fs').promises
-const cloudUploadService = require('../services/cloudUpload')
+const CloudUploadService = require('../services/CloudUpload')
 require('dotenv').config()
 
 class CardsController extends BaseController {
-  constructor(options) {
-    super(options)
-  }
-
   get = async (req, res, next) => {
     const {
-      body = null,
       params: { editionId = null },
     } = req
     const { resBuilder } = res
@@ -44,11 +39,19 @@ class CardsController extends BaseController {
       params: { editionId = null },
     } = req
     const { resBuilder } = res
-    body.edition = editionId
 
     try {
       const edition = await Editions.getById(editionId)
+      body.edition = editionId
       body.series = edition.series
+
+      if (req.file) {
+        const uploads = new CloudUploadService()
+        const { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
+        body.uploadCardThumbnailJpg = imgUrl
+        body.idCloudJpg = idCloudJpg
+        await fs.unlink(req.file.path)
+      }
 
       const newItem = await this.methodsName.createItem(body)
 
@@ -76,12 +79,60 @@ class CardsController extends BaseController {
     }
   }
 
+  update = async (req, res, next) => {
+    const {
+      body = null,
+      params: { id = null },
+    } = req
+    const { resBuilder } = res
+
+    try {
+      if (!req.file && !body.cardName && !body.type && !body.rarity) {
+        return resBuilder.error({
+          code: HttpCodes.BAD_REQUEST,
+          message: 'At least one field is required',
+        })
+      }
+      const uploads = new CloudUploadService()
+
+      if (req.file) {
+        const { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
+        body.uploadCardThumbnailJpg = imgUrl
+        body.idCloudJpg = idCloudJpg
+        await fs.unlink(req.file.path)
+      }
+
+      const card = await this.methodsName.getById(id)
+
+      if (card.idCloudJpg) {
+        await uploads.deleteOldAvatar(card.idCloudJpg)
+      }
+
+      const updatedItem = await this.methodsName.updateItem(id, body)
+
+      if (!updatedItem) {
+        return resBuilder.error({
+          code: HttpCodes.BAD_REQUEST,
+          message: `[${this.controllerName}] with [${id}] id was not updated or not found!`,
+        })
+      }
+
+      return resBuilder.successUpdated({
+        code: HttpCodes.OK,
+        message: `[${this.controllerName}] with [${id}] id was updated`,
+        data: updatedItem,
+      })
+    } catch (e) {
+      next(e)
+    }
+  }
+
   uploadPng = async (req, res, next) => {
     const { id } = req.params
     const { resBuilder } = res
 
     try {
-      const uploads = new cloudUploadService()
+      const uploads = new CloudUploadService()
       const { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
 
       const card = await Cards.getById(id)
@@ -107,7 +158,7 @@ class CardsController extends BaseController {
     const { resBuilder } = res
 
     try {
-      const uploads = new cloudUploadService()
+      const uploads = new CloudUploadService()
       const { idCloudWebm, webmUrl } = await uploads.saveWebm(req.file.path)
 
       const card = await Cards.getById(id)

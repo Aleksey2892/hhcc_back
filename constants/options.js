@@ -4,14 +4,14 @@ module.exports = {
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: function (doc, ret) {
+      transform: function (_doc, ret) {
         delete ret._id
         return ret
       },
     },
     toObject: {
       virtuals: true,
-      transform: function (doc, ret) {
+      transform: function (_doc, ret) {
         delete ret._id
         return ret
       },

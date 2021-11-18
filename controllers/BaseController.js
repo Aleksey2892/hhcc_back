@@ -7,7 +7,7 @@ module.exports = class BaseController {
     this.controllerName = controllerName
   }
 
-  get = async (req, res, next) => {
+  get = async (_req, res, next) => {
     const { resBuilder } = res
 
     try {

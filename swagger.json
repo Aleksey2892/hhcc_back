@@ -386,7 +386,45 @@
         }
       }
     },
-    "/editions/{editionId}": {
+    "/edition/{editionId}": {
+      "get": {
+        "tags": ["Editions"],
+        "summary": "Get one edition by Id",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "editionId",
+            "in": "path",
+            "description": "Id of the edition you want to get ('id' field in series object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEditionByIdResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      },
       "delete": {
         "tags": ["Editions"],
         "summary": "Delete edition",
@@ -423,7 +461,7 @@
     "/cards/{editionId}": {
       "get": {
         "tags": ["Cards"],
-        "summary": "Get all cards tasks for current user",
+        "summary": "Get all cards for current edition",
         "security": [{ "Bearer": [] }],
         "parameters": [
           {
@@ -476,9 +514,9 @@
           "description": "Card's object",
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/PostCardRequest"
+                "$ref": "#/components/schemas/PostCardRequestWithJpeg"
               }
             }
           }
@@ -509,7 +547,7 @@
         }
       }
     },
-    "/cards/{id}": {
+    "/card/{id}": {
       "get": {
         "tags": ["Cards"],
         "summary": "Get one card by id",
@@ -518,7 +556,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Card's id ('id' field in card's object)",
+            "description": "Card's id ('id' field in series's or edition's object)",
             "required": true,
             "type": "string"
           }
@@ -528,7 +566,7 @@
             "description": "Successful operation",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/PostCardResponse" }
+                "schema": { "$ref": "#/components/schemas/GetCardByIdResponse" }
               }
             }
           },
@@ -563,9 +601,9 @@
           "description": "Card's object",
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateCardRequest"
+                "$ref": "#/components/schemas/PostCardRequestWithJpeg"
               }
             }
           }
@@ -628,7 +666,7 @@
         }
       }
     },
-    "/cards/png/{id}": {
+    "/card/png/{id}": {
       "patch": {
         "tags": ["Cards"],
         "summary": "Upload png or jpeg image for card",
@@ -681,7 +719,7 @@
         }
       }
     },
-    "/cards/webm/{id}": {
+    "/card/webm/{id}": {
       "patch": {
         "tags": ["Cards"],
         "summary": "Upload webm format for card",
@@ -846,10 +884,105 @@
                       },
                       "cards": {
                         "type": "array",
-                        "description": "Edition's cards",
+                        "description": "Series's cards",
                         "items": {
-                          "type": "string",
-                          "description": "Edition's id cards"
+                          "type": "object",
+                          "properties": {
+                            "cardName": {
+                              "type": "string",
+                              "description": "Cards's name",
+                              "example": "Exposition Universelle2"
+                            },
+                            "cardDate": {
+                              "type": "string",
+                              "description": "Card's date. Format - year-month-day",
+                              "example": "2020-12-31"
+                            },
+                            "series": {
+                              "type": "string",
+                              "description": "Card's series id",
+                              "example": "507f1f77bcf86cd799439011"
+                            },
+                            "cardNumber": {},
+                            "edition": {
+                              "type": "string",
+                              "description": "Card's edition id",
+                              "example": "507f1f77bcf86cd799439011"
+                            },
+                            "circulation": {
+                              "type": "integer"
+                            },
+                            "uploadCardThumbnailJpj": {
+                              "type": "string",
+                              "description": "Cloud's Jpg url (created if 'file' field was provided while adding new card)"
+                            },
+                            "idCloudJpg": {
+                              "type": "string",
+                              "description": "Cloud's Webm id. Exists only with uploadCardThumbnailJpj",
+                              "example": "cardsJpg/arm1hze2vws2oe9inywy"
+                            },
+                            "uploadCardHighResWebm": {
+                              "type": "string",
+                              "description": "Cloud's Webm url (created if 'file' field was provided while adding new card)"
+                            },
+                            "idCloudWebm": {
+                              "type": "string",
+                              "description": "Cloud's Webm id. Exists only with uploadCardHighResWebm",
+                              "example": "cardsWebm/arm1hze2vws2oe9inywy"
+                            },
+                            "type": {
+                              "type": "string",
+                              "description": "Cards's type Options",
+                              "enum": [
+                                "Human",
+                                "Event",
+                                "Invention",
+                                "Artwork",
+                                "Special"
+                              ]
+                            },
+                            "rarity": {
+                              "type": "string",
+                              "description": "Cards's Rarity Options",
+                              "enum": [
+                                "Common",
+                                "Uncommon",
+                                "Rare",
+                                "Epic",
+                                "Legendary"
+                              ]
+                            },
+                            "categories": {
+                              "type": "array",
+                              "description": "Card's category",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "description": {
+                              "type": "string",
+                              "description": "Information about card"
+                            },
+                            "goldenCard": {
+                              "type": "boolean",
+                              "description": "Card's status"
+                            },
+                            "openseaLink": {
+                              "type": "string",
+                              "description": "Golden Card link on OpenSea. Open only if Golden Card is true"
+                            },
+                            "artist": {
+                              "type": "string"
+                            },
+                            "animator": {
+                              "type": "string"
+                            },
+                            "id": {
+                              "type": "string",
+                              "description": "Cards's id",
+                              "example": "507f1f77bcf86cd799439011"
+                            }
+                          }
                         }
                       }
                     }
@@ -857,105 +990,10 @@
                 },
                 "cards": {
                   "type": "array",
-                  "description": "Series's cards",
+                  "description": "Edition's cards",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "cardName": {
-                        "type": "string",
-                        "description": "Cards's name",
-                        "example": "Exposition Universelle2"
-                      },
-                      "cardDate": {
-                        "type": "string",
-                        "description": "Card's date. Format - year-month-day",
-                        "example": "2020-12-31"
-                      },
-                      "series": {
-                        "type": "string",
-                        "description": "Card's series id",
-                        "example": "507f1f77bcf86cd799439011"
-                      },
-                      "cardNumber": {},
-                      "edition": {
-                        "type": "string",
-                        "description": "Card's edition id",
-                        "example": "507f1f77bcf86cd799439011"
-                      },
-                      "circulation": {
-                        "type": "integer"
-                      },
-                      "uploadCardThumbnailJpj": {
-                        "type": "string",
-                        "description": "Cloud's Jpg url (created if 'file' field was provided while adding new card)"
-                      },
-                      "idCloudJpg": {
-                        "type": "string",
-                        "description": "Cloud's Webm id. Exists only with uploadCardThumbnailJpj",
-                        "example": "cardsJpg/arm1hze2vws2oe9inywy"
-                      },
-                      "uploadCardHighResWebm": {
-                        "type": "string",
-                        "description": "Cloud's Webm url (created if 'file' field was provided while adding new card)"
-                      },
-                      "idCloudWebm": {
-                        "type": "string",
-                        "description": "Cloud's Webm id. Exists only with uploadCardHighResWebm",
-                        "example": "cardsWebm/arm1hze2vws2oe9inywy"
-                      },
-                      "type": {
-                        "type": "string",
-                        "description": "Cards's type Options",
-                        "enum": [
-                          "Human",
-                          "Event",
-                          "Invention",
-                          "Artwork",
-                          "Special"
-                        ]
-                      },
-                      "rarity": {
-                        "type": "string",
-                        "description": "Cards's Rarity Options",
-                        "enum": [
-                          "Common",
-                          "Uncommon",
-                          "Rare",
-                          "Epic",
-                          "Legendary"
-                        ]
-                      },
-                      "categories": {
-                        "type": "array",
-                        "description": "Card's category",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "description": {
-                        "type": "string",
-                        "description": "Information about card"
-                      },
-                      "goldenCard": {
-                        "type": "boolean",
-                        "description": "Card's status"
-                      },
-                      "openseaLink": {
-                        "type": "string",
-                        "description": "Golden Card link on OpenSea. Open only if Golden Card is true"
-                      },
-                      "artist": {
-                        "type": "string"
-                      },
-                      "animator": {
-                        "type": "string"
-                      },
-                      "id": {
-                        "type": "string",
-                        "description": "Cards's id",
-                        "example": "507f1f77bcf86cd799439011"
-                      }
-                    }
+                    "type": "string",
+                    "description": "Edition's id cards"
                   }
                 }
               }
@@ -1147,6 +1185,40 @@
               "type": "string",
               "description": "Edition's id cards",
               "example": "61904c2d78611b0fef9a0295, 45604c2d7fgr450fef9ayh77"
+            }
+          }
+        }
+      },
+      "GetEditionByIdResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "foundItem": {
+                "type": "object",
+                "properties": {
+                  "editionName": {
+                    "type": "string",
+                    "description": "Edition's name",
+                    "example": "Edition1"
+                  },
+                  "series": {
+                    "type": "string",
+                    "description": "Series's id",
+                    "example": "61904c2d78611b0fef9a0295"
+                  },
+                  "cards": {
+                    "type": "array",
+                    "description": "Edition's cards",
+                    "items": {
+                      "type": "string",
+                      "description": "Edition's id cards",
+                      "example": "61904c2d78611b0fef9a0295, 45604c2d7fgr450fef9ayh77"
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -1355,6 +1427,120 @@
           }
         }
       },
+      "GetCardByIdResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "foundItem": {
+                "type": "object",
+                "properties": {
+                  "cardName": {
+                    "type": "string",
+                    "description": "Cards's name",
+                    "example": "Exposition Universelle2"
+                  },
+                  "cardDate": {
+                    "type": "string",
+                    "description": "Card's date. Format - year-month-day",
+                    "example": "2020-12-31"
+                  },
+                  "series": {
+                    "type": "string",
+                    "description": "Card's series id",
+                    "example": "507f1f77bcf86cd799439011"
+                  },
+                  "cardNumber": {
+                    "type": "integer",
+                    "description": "X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )",
+                    "example": "1/21"
+                  },
+                  "edition": {
+                    "type": "string",
+                    "description": "Card's edition id",
+                    "example": "507f1f77bcf86cd799439011"
+                  },
+                  "circulation": {
+                    "type": "integer"
+                  },
+                  "uploadCardThumbnailJpj": {
+                    "type": "string",
+                    "description": "Cloud's Jpg url (created if 'file' field was provided while adding new card)",
+                    "example": "https://res.cloudinary.com/debt92wvz/image/upload/v1636659464/cardsJpg/rqhxohiqidv6gpffsai2.png"
+                  },
+                  "idCloudJpg": {
+                    "type": "string",
+                    "description": "Cloud's Webm id. Exists only with uploadCardThumbnailJpj",
+                    "example": "cardsJpg/arm1hze2vws2oe9inywy"
+                  },
+                  "uploadCardHighResWebm": {
+                    "type": "string",
+                    "description": "Cloud's Webm url (created if 'file' field was provided while adding new card)",
+                    "example": "https://res.cloudinary.com/debt92wvz/video/upload/v1636659373/cardsWebm/limahh5bkoo9z4bdlobr.webm"
+                  },
+                  "idCloudWebm": {
+                    "type": "string",
+                    "description": "Cloud's Webm id. Exists only with uploadCardHighResWebm",
+                    "example": "cardsWebm/arm1hze2vws2oe9inywy"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "Cards's type Options",
+                    "enum": [
+                      "Human",
+                      "Event",
+                      "Invention",
+                      "Artwork",
+                      "Special"
+                    ]
+                  },
+                  "rarity": {
+                    "type": "string",
+                    "description": "Cards's Rarity Options",
+                    "enum": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+                  },
+                  "categories": {
+                    "type": "array",
+                    "description": "Card's category",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Information about card",
+                    "example": "The fourth of eight expositions held in the portrait painting buy Italian artist Leonardo da Vinci..."
+                  },
+                  "goldenCard": {
+                    "type": "boolean",
+                    "description": "Card's status. In default - false",
+                    "example": false
+                  },
+                  "openseaLink": {
+                    "type": "string",
+                    "description": "Golden Card link on OpenSea. Open only if Golden Card is true",
+                    "example": "https://opensea.io"
+                  },
+                  "artist": {
+                    "type": "string",
+                    "example": "Claudio Bandoli"
+                  },
+                  "animator": {
+                    "type": "string",
+                    "example": "Claudio Bandoli"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Cards's id",
+                    "example": "507f1f77bcf86cd799439011"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "PostCardRequest": {
         "required": ["cardName", "type", "rarity"],
         "type": "object",
@@ -1373,6 +1559,67 @@
             "type": "string",
             "description": "Cards's Rarity Options",
             "enum": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+          }
+        }
+      },
+      "PostCardRequestWithJpeg": {
+        "type": "object",
+        "properties": {
+          "cardName": {
+            "type": "string",
+            "description": "Cards's name",
+            "example": "Exposition Universelle2"
+          },
+          "cardDate": {
+            "type": "string",
+            "description": "Card's date. Format - year-month-day",
+            "example": "2020-12-31"
+          },
+          "cardNumber": {
+            "type": "string",
+            "description": "X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )",
+            "example": "1/21"
+          },
+          "circulation": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string",
+            "description": "Cards's type Options",
+            "enum": ["Human", "Event", "Invention", "Artwork", "Special"]
+          },
+          "rarity": {
+            "type": "string",
+            "description": "Cards's Rarity Options",
+            "enum": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+          },
+          "description": {
+            "type": "string",
+            "description": "Information about card",
+            "example": "The fourth of eight expositions held in the portrait painting buy Italian artist Leonardo da Vinci..."
+          },
+          "goldenCard": {
+            "type": "boolean",
+            "description": "Card's status. In default - false",
+            "example": false
+          },
+          "openseaLink": {
+            "type": "string",
+            "description": "Golden Card link on OpenSea. Open only if Golden Card is true",
+            "example": "https://opensea.io"
+          },
+          "artist": {
+            "type": "string",
+            "example": "Claudio Bandoli"
+          },
+          "animator": {
+            "type": "string",
+            "example": "Claudio Bandoli"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "Card's image"
           }
         }
       },
@@ -1410,7 +1657,7 @@
             "example": "507f1f77bcf86cd799439011"
           },
           "cardNumber": {
-            "type": "integer",
+            "type": "string",
             "description": "X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )",
             "example": "1/21"
           },

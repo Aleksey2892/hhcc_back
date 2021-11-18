@@ -2,23 +2,19 @@ const BaseController = require('./BaseController')
 const Series = require('../model/collectionMethods/Series')
 const Cards = require('../model/collectionMethods/Cards')
 const Editions = require('../model/collectionMethods/Editions')
-const cloudUploadService = require('../services/cloudUpload')
+const CloudUploadService = require('../services/CloudUpload')
 const fs = require('fs').promises
 const HttpCodes = require('../constants/httpCodes')
 
 class SeriesController extends BaseController {
-  constructor(options) {
-    super(options)
-  }
-
   create = async (req, res, next) => {
     const { body = null } = req
     const { resBuilder } = res
 
     try {
       if (req.file) {
-        const uploads = new cloudUploadService()
-        let { idCloudLogo, urlLogo } = await uploads.saveSeriesLogo(
+        const uploads = new CloudUploadService()
+        const { idCloudLogo, urlLogo } = await uploads.saveSeriesLogo(
           req.file.path,
         )
         body.urlLogo = urlLogo
@@ -60,7 +56,7 @@ class SeriesController extends BaseController {
         })
       }
 
-      const uploads = new cloudUploadService()
+      const uploads = new CloudUploadService()
 
       if (req.file) {
         const { idCloudLogo, urlLogo } = await uploads.saveSeriesLogo(

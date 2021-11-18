@@ -11,4 +11,4 @@ const HttpCodes = {
   SERVER_ERROR: 500,
 }
 
-module.exports = HttpCodes;
+module.exports = HttpCodes

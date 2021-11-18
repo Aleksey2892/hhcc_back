@@ -23,7 +23,7 @@ const cardSchema = new Schema(
     },
     cardNumber: {
       // X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )
-      type: Number,
+      type: String,
     },
     edition: {
       // autofield from edition
