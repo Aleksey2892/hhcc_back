@@ -2,10 +2,6 @@ const userModel = require('../schemas/user')
 const BaseMethods = require('./BaseMethods')
 
 class UsersMethods extends BaseMethods {
-  constructor(modelName) {
-    super(modelName)
-  }
-
   findByLogin(login) {
     return this.modelName.findOne({ login })
   }

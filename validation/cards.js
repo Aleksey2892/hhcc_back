@@ -75,10 +75,10 @@ const validate = async (schema, body, next) => {
 }
 
 module.exports = {
-  validationCreatedCard: (req, res, next) => {
+  validationCreatedCard: (req, _res, next) => {
     return validate(validateCreateCard, req.body, next)
   },
-  validationUpdatedCard: (req, res, next) => {
+  validationUpdatedCard: (req, _res, next) => {
     return validate(validateUpdateCard, req.body, next)
   },
 }
