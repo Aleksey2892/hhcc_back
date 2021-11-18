@@ -6,10 +6,6 @@ require('dotenv').config()
 const SECRET_KEY = process.env.SECRET_KEY
 
 class UsersController extends BaseController {
-  constructor(options) {
-    super(options)
-  }
-
   async create(req, res, next) {
     const { resBuilder } = res
 

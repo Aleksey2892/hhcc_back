@@ -5,17 +5,17 @@ require('dotenv').config()
 const UPLOAD_DIR = process.env.UPLOAD_DIR
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: function (_req, _file, cb) {
     cb(null, UPLOAD_DIR)
   },
-  filename: function (req, file, cb) {
+  filename: function (_req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname)
   },
 })
 
 const upload = multer({
   storage: storage,
-  fileFilter: (req, file, cb) => {
+  fileFilter: (_req, file, cb) => {
     if (file.mimetype.includes('webm') || file.mimetype.includes('image')) {
       cb(null, true)
       return

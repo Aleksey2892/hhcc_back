@@ -5,13 +5,8 @@ const Cards = require('../model/collectionMethods/Cards')
 const HttpCodes = require('../constants/httpCodes')
 
 class EditionsController extends BaseController {
-  constructor(options) {
-    super(options)
-  }
-
   get = async (req, res, next) => {
     const {
-      body = null,
       params: { seriesId = null },
     } = req
     const { resBuilder } = res

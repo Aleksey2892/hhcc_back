@@ -4,17 +4,12 @@ const Series = require('../model/collectionMethods/Series')
 const Editions = require('../model/collectionMethods/Editions')
 const HttpCodes = require('../constants/httpCodes')
 const fs = require('fs').promises
-const cloudUploadService = require('../services/cloudUpload')
+const CloudUploadService = require('../services/CloudUpload')
 require('dotenv').config()
 
 class CardsController extends BaseController {
-  constructor(options) {
-    super(options)
-  }
-
   get = async (req, res, next) => {
     const {
-      body = null,
       params: { editionId = null },
     } = req
     const { resBuilder } = res
@@ -51,8 +46,8 @@ class CardsController extends BaseController {
       body.series = edition.series
 
       if (req.file) {
-        const uploads = new cloudUploadService()
-        let { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
+        const uploads = new CloudUploadService()
+        const { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
         body.uploadCardThumbnailJpg = imgUrl
         body.idCloudJpg = idCloudJpg
         await fs.unlink(req.file.path)
@@ -98,10 +93,10 @@ class CardsController extends BaseController {
           message: 'At least one field is required',
         })
       }
-      const uploads = new cloudUploadService()
+      const uploads = new CloudUploadService()
 
       if (req.file) {
-        let { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
+        const { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
         body.uploadCardThumbnailJpg = imgUrl
         body.idCloudJpg = idCloudJpg
         await fs.unlink(req.file.path)
@@ -137,7 +132,7 @@ class CardsController extends BaseController {
     const { resBuilder } = res
 
     try {
-      const uploads = new cloudUploadService()
+      const uploads = new CloudUploadService()
       const { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
 
       const card = await Cards.getById(id)
@@ -163,7 +158,7 @@ class CardsController extends BaseController {
     const { resBuilder } = res
 
     try {
-      const uploads = new cloudUploadService()
+      const uploads = new CloudUploadService()
       const { idCloudWebm, webmUrl } = await uploads.saveWebm(req.file.path)
 
       const card = await Cards.getById(id)
