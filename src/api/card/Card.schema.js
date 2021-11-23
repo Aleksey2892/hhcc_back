@@ -1,9 +1,5 @@
 const { Schema, model } = require('mongoose')
-const { card } = require('../../constants/enums')
 const { optionsForSchemas } = require('../../constants/options')
-
-const cardTypesOptions = Object.values(card.CardTypes)
-const cardRarityOptions = Object.values(card.CardRarity)
 
 const cardSchema = new Schema(
   {
@@ -24,6 +20,7 @@ const cardSchema = new Schema(
     cardNumber: {
       // X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )
       type: String,
+      default: 'X/21',
     },
     edition: {
       // autofield from edition
@@ -52,14 +49,12 @@ const cardSchema = new Schema(
       default: null,
     },
     type: {
-      type: String,
-      enum: cardTypesOptions,
-      required: [true, `type is required of ${cardTypesOptions}`],
+      type: Array,
+      required: [true, 'type is required'],
     },
     rarity: {
-      type: String,
-      enum: cardRarityOptions,
-      required: [true, `type is required of ${cardRarityOptions}`],
+      type: Array,
+      required: [true, 'type is required'],
     },
     categories: {
       type: Array,

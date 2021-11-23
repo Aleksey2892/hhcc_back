@@ -87,12 +87,6 @@ class CardsController extends RootController {
     const { resBuilder } = res
 
     try {
-      if (!req.file && !body.cardName && !body.type && !body.rarity) {
-        return resBuilder.error({
-          code: HttpCodes.BAD_REQUEST,
-          message: 'At least one field is required',
-        })
-      }
       const uploads = new CloudUploadService()
 
       if (req.file) {
@@ -132,10 +126,10 @@ class CardsController extends RootController {
     const { resBuilder } = res
 
     try {
+      const card = await Cards.getById(id)
+
       const uploads = new CloudUploadService()
       const { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
-
-      const card = await Cards.getById(id)
 
       if (card.idCloudJpg) {
         await uploads.deleteOldAvatar(card.idCloudJpg)
@@ -158,10 +152,19 @@ class CardsController extends RootController {
     const { resBuilder } = res
 
     try {
+      const card = await this.methodsName.getById(id)
+
+      if (!card.goldenCard) {
+        await fs.unlink(req.file.path)
+        return resBuilder.error({
+          code: HttpCodes.SERVER_ERROR,
+          message: `The status of the card ${card.cardName} should be golden for upload video`,
+        })
+      }
+
       const uploads = new CloudUploadService()
       const { idCloudWebm, webmUrl } = await uploads.saveWebm(req.file.path)
 
-      const card = await Cards.getById(id)
       if (card.idCloudWebm) {
         await uploads.deleteOldAvatar(card.idCloudWebm)
       }
