@@ -11,7 +11,6 @@ const seriesSchema = new Schema(
     totalCardsNumber: {
       type: Number,
       required: true,
-      default: 0,
     },
     urlLogo: {
       type: String,
