@@ -11,20 +11,26 @@ cloudinary.config({
 const uploadCloud = promisify(cloudinary.uploader.upload)
 
 class CloudUploadService {
-  async saveSeriesLogo(pathFile, idCloudJpg) {
-    const { publicId, secureUrl } = await uploadCloud(pathFile, {
-      publicId: idCloudJpg?.replace('cardsJpg/', ''),
-      folder: 'seriesLogo',
-    })
-    return { idCloudLogo: publicId, urlLogo: secureUrl }
+  async saveSeriesLogo(pathFile, id) {
+    const { public_id: idCloudLogo, secure_url: urlLogo } = await uploadCloud(
+      pathFile,
+      {
+        public_id: id?.replace('cardsJpg/', ''),
+        folder: 'seriesLogo',
+      },
+    )
+    return { idCloudLogo, urlLogo }
   }
 
-  async saveImg(pathFile, idCloudJpg) {
-    const { publicId, secureUrl } = await uploadCloud(pathFile, {
-      publicId: idCloudJpg?.replace('cardsJpg/', ''),
-      folder: 'cardsJpg',
-    })
-    return { idCloudJpg: publicId, imgUrl: secureUrl }
+  async saveImg(pathFile, id) {
+    const { public_id: idCloudJpg, secure_url: imgUrl } = await uploadCloud(
+      pathFile,
+      {
+        public_id: id?.replace('cardsJpg/', ''),
+        folder: 'cardsJpg',
+      },
+    )
+    return { idCloudJpg, imgUrl }
   }
 
   async deleteOldAvatar(id) {
@@ -33,13 +39,16 @@ class CloudUploadService {
     })
   }
 
-  async saveWebm(pathFile, idCLoudWebm) {
-    const { publicId, secureUrl } = await uploadCloud(pathFile, {
-      resource_type: 'video',
-      publicId: idCLoudWebm?.replace('cardsWebm/', ''),
-      folder: 'cardsWebm',
-    })
-    return { idCloudWebm: publicId, webmUrl: secureUrl }
+  async saveWebm(pathFile, id) {
+    const { public_id: idCloudWebm, secure_url: webmUrl } = await uploadCloud(
+      pathFile,
+      {
+        resource_type: 'video',
+        public_id: id?.replace('cardsWebm/', ''),
+        folder: 'cardsWebm',
+      },
+    )
+    return { idCloudWebm, webmUrl }
   }
 }
 
