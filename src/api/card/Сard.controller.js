@@ -33,6 +33,44 @@ class CardsController extends RootController {
     }
   }
 
+  getAllCategories = async (_req, res, next) => {
+    const { resBuilder } = res
+
+    try {
+      const allCards = await this.methodsName.getAllCardsCollection()
+
+      const allCategories = allCards.map(card => card.categories).flat()
+      const calcCategories = {}
+
+      if (allCategories.length === 0) {
+        return resBuilder.error({
+          code: HttpCodes.NOT_FOUND,
+          message: `[${this.controllerName}] categories list is empty or server error!`,
+        })
+      }
+
+      allCategories.forEach(category => {
+        if (calcCategories[category] === undefined) {
+          calcCategories[category] = allCategories.filter(
+            word => word === category,
+          ).length
+          const procent = (
+            (calcCategories[category] / allCards.length) *
+            100
+          ).toFixed(2)
+          calcCategories[category] = procent + '%'
+        }
+      })
+
+      return resBuilder.success({
+        code: HttpCodes.OK,
+        data: calcCategories,
+      })
+    } catch (e) {
+      next(e)
+    }
+  }
+
   create = async (req, res, next) => {
     const {
       body = null,
@@ -56,6 +94,7 @@ class CardsController extends RootController {
       const newItem = await this.methodsName.createItem(body)
 
       if (edition && newItem) {
+        await fs.unlink(req.file.path)
         await Editions.updateItem(editionId, { $push: { cards: newItem._id } })
         await Series.updateItem(edition.series, {
           $push: { cards: newItem._id },
@@ -105,6 +144,7 @@ class CardsController extends RootController {
       const updatedItem = await this.methodsName.updateItem(id, body)
 
       if (!updatedItem) {
+        await fs.unlink(req.file.path)
         return resBuilder.error({
           code: HttpCodes.BAD_REQUEST,
           message: `[${this.controllerName}] with [${id}] id was not updated or not found!`,
