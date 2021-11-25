@@ -59,7 +59,7 @@ const cardSchema = new Schema(
     categories: {
       type: Array,
       default: [],
-      set: data => (!data ? [] : data),
+      // set: data => (!data ? [] : data),
     },
     description: {
       type: String,

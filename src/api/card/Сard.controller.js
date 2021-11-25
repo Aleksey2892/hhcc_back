@@ -94,7 +94,6 @@ class CardsController extends RootController {
       const newItem = await this.methodsName.createItem(body)
 
       if (edition && newItem) {
-        await fs.unlink(req.file.path)
         await Editions.updateItem(editionId, { $push: { cards: newItem._id } })
         await Series.updateItem(edition.series, {
           $push: { cards: newItem._id },
