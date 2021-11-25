@@ -7,7 +7,10 @@ const {
 const CardsController = require('./Сard.controller')
 const upload = require('../../helpers/upload')
 
+router.get('/cards-categories', CardsController.getAllCategories)
+
 router
+  .get('/cards-categories', CardsController.getAllCategories)
   .get('/cards/:editionId', CardsController.get)
   .post(
     '/cards/:editionId',

@@ -6,6 +6,10 @@ class CardModel extends RootModel {
     return this.modelName.find({ edition: editionId })
   }
 
+  getAllCardsCollection() {
+    return this.modelName.find({})
+  }
+
   updatePng(id, imgUrl, idCloudJpg = null) {
     return CardSchema.findOneAndUpdate(
       { _id: id },
