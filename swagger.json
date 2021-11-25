@@ -461,6 +461,38 @@
         }
       }
     },
+    "/cards-categories": {
+      "get": {
+        "tags": ["Cards"],
+        "summary": "Get categories calculate a % from every card saved in the database",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllCategoriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
     "/cards/{editionId}": {
       "get": {
         "tags": ["Cards"],
@@ -1226,6 +1258,51 @@
           }
         }
       },
+      "GetAllCategoriesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "art": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "33.33%"
+              },
+              "renaissance": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "16.67%"
+              },
+              "XXcentury": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "16.67%"
+              },
+              "space": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "16.67%"
+              },
+              "usa": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "33.33%"
+              },
+              "XIXcentury": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "33.33%"
+              },
+              "france": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "33.33%"
+              }
+            }
+          }
+        }
+      },
       "GetAllCardsResponse": {
         "type": "object",
         "properties": {
@@ -1284,14 +1361,32 @@
                   "example": "cardsWebm/arm1hze2vws2oe9inywy"
                 },
                 "type": {
-                  "type": "string",
+                  "type": "array",
                   "description": "Cards's type Options",
-                  "enum": ["Human", "Event", "Invention", "Artwork", "Special"]
+                  "items": {
+                    "type": "string",
+                    "example": [
+                      "Human",
+                      "Event",
+                      "Invention",
+                      "Artwork",
+                      "Special"
+                    ]
+                  }
                 },
                 "rarity": {
-                  "type": "string",
+                  "type": "array",
                   "description": "Cards's Rarity Options",
-                  "enum": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+                  "items": {
+                    "type": "string",
+                    "exapmle": [
+                      "Common",
+                      "Uncommon",
+                      "Rare",
+                      "Epic",
+                      "Legendary"
+                    ]
+                  }
                 },
                 "categories": {
                   "type": "array",
@@ -1384,14 +1479,20 @@
             "example": "cardsWebm/arm1hze2vws2oe9inywy"
           },
           "type": {
-            "type": "string",
+            "type": "array",
             "description": "Cards's type Options",
-            "enum": ["Human", "Event", "Invention", "Artwork", "Special"]
+            "items": {
+              "type": "string",
+              "example": ["Human", "Event", "Invention", "Artwork", "Special"]
+            }
           },
           "rarity": {
-            "type": "string",
+            "type": "array",
             "description": "Cards's Rarity Options",
-            "enum": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+            "items": {
+              "type": "string",
+              "exapmle": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+            }
           },
           "categories": {
             "type": "array",
@@ -1488,20 +1589,32 @@
                     "example": "cardsWebm/arm1hze2vws2oe9inywy"
                   },
                   "type": {
-                    "type": "string",
+                    "type": "array",
                     "description": "Cards's type Options",
-                    "enum": [
-                      "Human",
-                      "Event",
-                      "Invention",
-                      "Artwork",
-                      "Special"
-                    ]
+                    "items": {
+                      "type": "string",
+                      "example": [
+                        "Human",
+                        "Event",
+                        "Invention",
+                        "Artwork",
+                        "Special"
+                      ]
+                    }
                   },
                   "rarity": {
-                    "type": "string",
+                    "type": "array",
                     "description": "Cards's Rarity Options",
-                    "enum": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+                    "items": {
+                      "type": "string",
+                      "exapmle": [
+                        "Common",
+                        "Uncommon",
+                        "Rare",
+                        "Epic",
+                        "Legendary"
+                      ]
+                    }
                   },
                   "categories": {
                     "type": "array",
@@ -1554,14 +1667,20 @@
             "example": "Exposition Universelle2"
           },
           "type": {
-            "type": "string",
+            "type": "array",
             "description": "Cards's type Options",
-            "enum": ["Human", "Event", "Invention", "Artwork", "Special"]
+            "items": {
+              "type": "string",
+              "example": ["Human", "Event", "Invention", "Artwork", "Special"]
+            }
           },
           "rarity": {
-            "type": "string",
+            "type": "array",
             "description": "Cards's Rarity Options",
-            "enum": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+            "items": {
+              "type": "string",
+              "exapmle": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+            }
           }
         }
       },
@@ -1587,14 +1706,28 @@
             "type": "integer"
           },
           "type": {
-            "type": "string",
+            "type": "array",
             "description": "Cards's type Options",
-            "enum": ["Human", "Event", "Invention", "Artwork", "Special"]
+            "items": {
+              "type": "string",
+              "example": "Human"
+            }
           },
           "rarity": {
-            "type": "string",
+            "type": "array",
             "description": "Cards's Rarity Options",
-            "enum": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+            "items": {
+              "type": "string",
+              "example": "Common"
+            }
+          },
+          "categories": {
+            "type": "array",
+            "description": "Cards's categories Options",
+            "items": {
+              "type": "string",
+              "example": "france"
+            }
           },
           "description": {
             "type": "string",
@@ -1693,14 +1826,20 @@
             "example": "cardsWebm/arm1hze2vws2oe9inywy"
           },
           "type": {
-            "type": "string",
+            "type": "array",
             "description": "Cards's type Options",
-            "enum": ["Human", "Event", "Invention", "Artwork", "Special"]
+            "items": {
+              "type": "string",
+              "example": ["Human", "Event", "Invention", "Artwork", "Special"]
+            }
           },
           "rarity": {
-            "type": "string",
+            "type": "array",
             "description": "Cards's Rarity Options",
-            "enum": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+            "items": {
+              "type": "string",
+              "exapmle": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+            }
           },
           "categories": {
             "type": "array",
