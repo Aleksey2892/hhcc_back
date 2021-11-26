@@ -1879,7 +1879,7 @@
         }
       },
       "PatchCardRequest": {
-        "required": ["file"],
+        "required": ["fileWebm"],
         "type": "object",
         "properties": {
           "file": {

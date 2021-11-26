@@ -29,6 +29,10 @@ router
   )
   .delete('/card/:id', CardsController.remove)
   .patch('/card/png/:id', upload.single('file'), CardsController.uploadPng)
-  .patch('/card/webm/:id', upload.single('file'), CardsController.uploadWebm)
+  .patch(
+    '/card/webm/:id',
+    upload.single('fileWebm'),
+    CardsController.uploadWebm,
+  )
 
 module.exports = router
