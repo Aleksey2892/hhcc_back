@@ -1882,7 +1882,7 @@
         "required": ["fileWebm"],
         "type": "object",
         "properties": {
-          "file": {
+          "fileWebm": {
             "type": "string",
             "format": "binary",
             "description": "Card's image"
