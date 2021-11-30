@@ -25,6 +25,7 @@ router
     '/card/:id',
     upload.single('file'),
     validationUpdatedCard,
+    guard,
     CardsController.update,
   )
   .delete('/card/:id', CardsController.remove)
