@@ -5,7 +5,7 @@ const guard = require('../../helpers/guard')
 const upload = require('../../helpers/upload')
 
 router
-  .get('/series', guard, SeriesController.get)
+  .get('/series', SeriesController.get)
   .post('/series', upload.single('file'), guard, SeriesController.create)
 
 router
@@ -15,7 +15,7 @@ router
     guard,
     SeriesController.update,
   )
-  .get('/series/:seriesId', guard, SeriesController.getById)
+  .get('/series/:seriesId', SeriesController.getById)
   .delete('/series/:seriesId', guard, SeriesController.remove)
 
 module.exports = router
